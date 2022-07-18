@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -31,6 +32,16 @@ public class ProductProvider {
             GetProductDetailRes getProductDetailRes = productDao.getProductDetail(productIdx);
             return getProductDetailRes;
 
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 메인화면 추천 상품 조회
+    public List<GetMainProductsRes> getMainProducts() throws BaseException{
+        try {
+            List<GetMainProductsRes> getMainProductsRes = productDao.getMainProducts();
+            return getMainProductsRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

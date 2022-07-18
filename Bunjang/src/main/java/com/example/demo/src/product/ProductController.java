@@ -8,6 +8,7 @@ import com.example.demo.src.product.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 
@@ -46,7 +47,23 @@ public class ProductController {
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
+    }
 
+    /**
+     * 메인화면 추천 상품 조회 API
+     * [GET]
+     */
+    @ResponseBody
+    @GetMapping("")
+    public BaseResponse<List<GetMainProductsRes>> getMainProducts() {
+        try {
+            List<GetMainProductsRes> getMainProductsRes = productProvider.getMainProducts();
+
+            return new BaseResponse<>(getMainProductsRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
 }

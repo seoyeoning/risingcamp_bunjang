@@ -54,8 +54,23 @@ public class ProductDao {
                         rs.getString("categoryName"),
                         rs.getString("safePay")),
                 getProductDetailParams);
+    }
 
+    // 메인 화면 추천 상품 조회
+    public List<GetMainProductsRes> getMainProducts(){
+        String getMainProductsQuery = "select productImgUrl, price,productName, location, safePay\n" +
+                "from Products\n" +
+                "inner join ProductImgUrls on Products.productId = ProductImgUrls.productId\n" +
+                "group by Products.productId";
 
+        return this.jdbcTemplate.query(getMainProductsQuery,
+                (rs, rowNum) -> new GetMainProductsRes(
+                        rs.getString("productImgUrl"),
+                        rs.getString("price"),
+                        rs.getString("productName"),
+                        rs.getString("location"),
+                        rs.getString("safePay"))
+        );
     }
 
 
