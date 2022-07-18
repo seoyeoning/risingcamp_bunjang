@@ -16,11 +16,11 @@ public class GetProductDetailRes {
     private String price;
     private String productName;
     private String location;
-    private boolean productStatus;
+    private String productStatus;
     private int count;
-    private boolean trade;
+    private String trade;
     private String description;
     private String categoryName;
-    private boolean safePay;
+    private String safePay;
 
 }

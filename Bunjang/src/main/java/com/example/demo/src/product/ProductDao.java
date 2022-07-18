@@ -47,12 +47,12 @@ public class ProductDao {
                         rs.getString("price"),
                         rs.getString("productName"),
                         rs.getString("location"),
-                        rs.getBoolean("productStatus"),
+                        rs.getString("productStatus"),
                         rs.getInt("count"),
-                        rs.getBoolean("trade"),
+                        rs.getString("trade"),
                         rs.getString("description"),
                         rs.getString("categoryName"),
-                        rs.getBoolean("safePay")),
+                        rs.getString("safePay")),
                 getProductDetailParams);
 
 
