@@ -72,6 +72,8 @@ public class ProductDao {
                         rs.getString("safePay"))
         );
     }
-
+    public void getCategory(){
+        
+    }
 
 }
