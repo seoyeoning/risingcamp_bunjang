@@ -62,7 +62,7 @@ public class ProductDao {
                 "from Products\n" +
                 "inner join ProductImgUrls on Products.productId = ProductImgUrls.productId\n" +
                 "group by Products.productId";
-
+        int test=1;
         return this.jdbcTemplate.query(getMainProductsQuery,
                 (rs, rowNum) -> new GetMainProductsRes(
                         rs.getString("productImgUrl"),
