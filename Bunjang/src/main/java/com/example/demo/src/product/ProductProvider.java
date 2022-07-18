@@ -28,8 +28,8 @@ public class ProductProvider {
     // 상품 상세 페이지 조회
     public GetProductDetailRes getProductDetail(int productIdx) throws BaseException {
         try {
-            GetProductDetailRes getProductDtailRes = productDao.getProductDetail(productIdx);
-            return getProductDtailRes;
+            GetProductDetailRes getProductDetailRes = productDao.getProductDetail(productIdx);
+            return getProductDetailRes;
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

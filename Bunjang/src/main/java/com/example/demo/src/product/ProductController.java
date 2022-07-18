@@ -39,9 +39,9 @@ public class ProductController {
     public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
 
         try {
-            GetProductDetailRes getProductDtailRes = productProvider.getProductDetail(productIdx);
+            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
 
-            return new BaseResponse<>(getProductDtailRes);
+            return new BaseResponse<>(getProductDetailRes);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

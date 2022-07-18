@@ -21,13 +21,14 @@ public class ProductDao {
 
     // 상품 상세 페이지 조회
     public GetProductDetailRes getProductDetail(int productIdx) {
-        String getProductDetailQuery = "select format(price, '###,###') as price, productName, location, productStatus, count, trade, description, ThirdCategory.categoryName as categoryName, teg \n" +
+        String getProductDetailQuery = "select format(price, '###,###') as price, productName, location, productStatus, count, trade, description,\n" +
+                "       ThirdCategory.categoryName as categoryName, safePay\n" +
                 "from Products\n" +
                 "inner join FirstCategory on Products.firstCategoryId = FirstCategory.firstCategoryId\n" +
                 "inner join SecondCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
                 "inner join ThirdCategory on SecondCategory.secondCategoryId = ThirdCategory.secondCategoryId\n" +
                 "where productId = ?\n" +
-                "and Products.thirdCategoryId = ThirdCategory.thirdCategoryId;";
+                "and Products.thirdCategoryId = ThirdCategory.thirdCategoryId";
         int getProductDetailParams = productIdx;
 
         String getProductImgQuery = "select productImgUrl\n" +
@@ -46,12 +47,12 @@ public class ProductDao {
                         rs.getString("price"),
                         rs.getString("productName"),
                         rs.getString("location"),
-                        rs.getString("productStatus"),
+                        rs.getBoolean("productStatus"),
                         rs.getInt("count"),
-                        rs.getString("trade"),
+                        rs.getBoolean("trade"),
                         rs.getString("description"),
                         rs.getString("categoryName"),
-                        rs.getString("teg")),
+                        rs.getBoolean("safePay")),
                 getProductDetailParams);
 
 
