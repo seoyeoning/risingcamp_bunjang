@@ -112,6 +112,21 @@ public class ProductDao {
         );
     }
 
+    public List<GetMainProductsRes> getFirstCategory(int categoryId){
+        String getMainProductsQuery = "select productImgUrl, price,productName, location, safePay\n" +
+                "                from Products\n" +
+                "                inner join ProductImgUrls on Products.productId = ProductImgUrls.productId\n" +
+                "                where firstCategoryId=?";
+
+        return this.jdbcTemplate.query(getMainProductsQuery,
+                (rs, rowNum) -> new GetMainProductsRes(
+                        rs.getString("productImgUrl"),
+                        rs.getString("price"),
+                        rs.getString("productName"),
+                        rs.getString("location"),
+                        rs.getString("safePay")),categoryId
+        );
+    }
 
 
 }
