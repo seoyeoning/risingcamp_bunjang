@@ -66,4 +66,36 @@ public class ProductController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/search/{keyword}")
+    public BaseResponse<List<GetMainProductsRes>> searchProduct(@PathVariable("keyword") String keyword){
+        try {
+            return new BaseResponse<>(productProvider.searchProduct(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/search/store/{keyword}")
+    public BaseResponse<List<GetSearchStoreRes>> searchKeywordStores(@PathVariable("keyword") String keyword){
+        try {
+            return new BaseResponse<>(productProvider.searchKeywordStores(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/search/product/{keyword}")
+    public BaseResponse<List<GetKeywordRes>> searchKeyword(@PathVariable("keyword") String keyword){
+        try {
+            return new BaseResponse<>(productProvider.searchKeyword(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

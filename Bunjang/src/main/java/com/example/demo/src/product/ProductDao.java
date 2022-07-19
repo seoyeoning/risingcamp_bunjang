@@ -73,8 +73,45 @@ public class ProductDao {
         );
     }
 
-    public void getCategory(){
+    public List<GetMainProductsRes> searchProduct(String keyword){
+        String getProductQuery="select productImgUrl, price, productName, location, safePay FROM Products\n" +
+                "    inner join ProductImgUrls\n" +
+                "        on Products.productId = ProductImgUrls.productId\n" +
+                "where productName like ? group by Products.productId";
 
+        return this.jdbcTemplate.query(getProductQuery,
+                (rs, rowNum) -> new GetMainProductsRes(
+                        rs.getString("productImgUrl"),
+                        rs.getString("price"),
+                        rs.getString("productName"),
+                        rs.getString("location"),
+                        rs.getString("safePay")),
+                keyword
+        );
     }
+
+    public List<GetSearchStoreRes> searchKeywordStores(String keyword){
+        String getKeywordQuery="select storeName, storeProfileImgUrl from Stores where storeName like ?";
+        String getKeywordParams='%'+keyword+'%';
+        return this.jdbcTemplate.query(getKeywordQuery,
+                (rs, rowNum) -> new GetSearchStoreRes(
+                        rs.getString("storeName"),
+                        rs.getString("storeProfileImgUrl")),
+                getKeywordParams
+        );
+    }
+
+    public List<GetKeywordRes> searchKeyword(String keyword){
+        String getKeywordQuery="select productName FROM Products\n" +
+                "where productName like ?";
+        String searchKeywordParams='%'+keyword+'%';
+        return this.jdbcTemplate.query(getKeywordQuery,
+                (rs, rowNum) -> new GetKeywordRes(
+                        rs.getString("productName")),
+                searchKeywordParams
+        );
+    }
+
+
 
 }
