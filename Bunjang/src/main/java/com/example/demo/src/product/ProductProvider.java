@@ -49,4 +49,15 @@ public class ProductProvider {
         }
     }
 
+    // 상품 등록 태그 조회
+    public List<GetTagsRes> getTags(GetTagsReq getTagsReq) throws BaseException{
+        try {
+            List<GetTagsRes> getTagsRes = productDao.getTags(getTagsReq);
+            return getTagsRes;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

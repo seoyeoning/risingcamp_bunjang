@@ -69,6 +69,24 @@ public class ProductController {
         }
     }
 
+
+
+    /**
+     * 상품 등록 태그 조회 API
+     * [GET] /:userIdx/new-product/tags
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/new-product/tags")
+    public BaseResponse<List<GetTagsRes>> getTags(@PathVariable("userIdx") int userIdx,@RequestBody GetTagsReq getTagsReq) {
+        try {
+            List<GetTagsRes> getTagsRes = productProvider.getTags(getTagsReq);
+            return new BaseResponse<>(getTagsRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
     /**
      * 상품 등록 API
      *//*
@@ -82,5 +100,4 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }*/
-
 }

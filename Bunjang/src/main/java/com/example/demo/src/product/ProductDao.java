@@ -73,5 +73,18 @@ public class ProductDao {
         );
     }
 
+    // 상품 등록 태그 조회
+    public List<GetTagsRes> getTags(GetTagsReq getTagsReq) {
+        String getTagsQuery = "select *\n" +
+                "from Words\n" +
+                "where word like concat('%',?,'%')";
+        String getTagsParams = getTagsReq.getWord();
+
+        return this.jdbcTemplate.query(getTagsQuery,
+                (rs, rowNum) -> new GetTagsRes(
+                        rs.getString("word")),
+                getTagsParams);
+    }
+
 
 }
