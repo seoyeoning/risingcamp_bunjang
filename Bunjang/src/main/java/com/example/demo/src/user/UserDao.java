@@ -55,7 +55,7 @@ public class UserDao {
      */
 
     // 회원가입
-    public int createUser(PostUserReq postUserReq) {
+    /*public int createUser(PostUserReq postUserReq) {
         String createUserQuery = "insert into User (email, password, nickname) VALUES (?,?,?)"; // 실행될 동적 쿼리문
         Object[] createUserParams = new Object[]{postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getNickname()}; // 동적 쿼리의 ?부분에 주입될 값
         this.jdbcTemplate.update(createUserQuery, createUserParams);
@@ -64,7 +64,7 @@ public class UserDao {
 
         String lastInserIdQuery = "select last_insert_id()"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
         return this.jdbcTemplate.queryForObject(lastInserIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
-    }
+    }*/
 
     // 이메일 확인
     public int checkEmail(String email) {

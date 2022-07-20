@@ -40,7 +40,7 @@ public class UserService {
     }
     // ******************************************************************************
     // 회원가입(POST)
-    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
+    /*public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         // 중복 확인: 해당 이메일을 가진 유저가 있는지 확인합니다. 중복될 경우, 에러 메시지를 보냅니다.
         if (userProvider.checkEmail(postUserReq.getEmail()) == 1) {
             throw new BaseException(POST_USERS_EXISTS_EMAIL);
@@ -66,7 +66,7 @@ public class UserService {
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(DATABASE_ERROR);
         }
-    }
+    }*/
 
     // 회원정보 수정(Patch)
     public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {

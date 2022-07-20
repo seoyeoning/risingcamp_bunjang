@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.*;
+import static com.example.demo.utils.ValidationRegex.isRegexEmail;
+
 @RestController
 
 @RequestMapping("/bunjang/products")
@@ -65,5 +68,19 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 상품 등록 API
+     *//*
+    @ResponseBody
+    @PostMapping("/:userIdx/new-product")
+    public BaseResponse<String> postProduct() {
+        try {
+
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }*/
 
 }

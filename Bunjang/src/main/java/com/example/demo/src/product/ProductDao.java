@@ -58,7 +58,7 @@ public class ProductDao {
 
     // 메인 화면 추천 상품 조회
     public List<GetMainProductsRes> getMainProducts(){
-        String getMainProductsQuery = "select productImgUrl, price,productName, location, safePay\n" +
+        String getMainProductsQuery = "select productImgUrl, format(price, '###,###') as price,productName, location, safePay\n" +
                 "from Products\n" +
                 "inner join ProductImgUrls on Products.productId = ProductImgUrls.productId\n" +
                 "group by Products.productId";
