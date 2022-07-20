@@ -240,7 +240,7 @@
     - 7월 21 일 목요일 → 로그인 회원가입 연동 시도 예정
     - 7월 22일 금요일 —> 상품등록 연동 시도 예정
     
-    ![화면 캡처 2022-07-20 201150.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5f1ca9f6-65af-41a8-a677-54bbe9b6cc85/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2022-07-20_201150.png)
+    ![%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2022-07-20_201150](https://user-images.githubusercontent.com/69641554/180001869-28d40204-816c-4f9e-84c9-60b461d852c7.png)
     
 
 ❗ **개발도중 이슈**
