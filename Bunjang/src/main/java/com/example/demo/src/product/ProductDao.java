@@ -124,5 +124,45 @@ public class ProductDao {
                 getThirdCategoryParams);
     }
 
+    // 상품 등록 전단계
+    public int postProductInfo(int userIdx, PostProductInfoReq postProductInfoReq) {
+
+        // 상품 정보 입력
+        String postProductInfoQuery = "INSERT INTO bunjang.ProductInfo (userId, productName, firstCategoryName, secondCategoryName, thirdCategoryName,\n" +
+                "                                 price, deliveryTip, count, productStatus, trade, location, description, safePay)\n" +
+                "VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Object[] postProductInfoParams = new Object[]{userIdx,postProductInfoReq.getProductName(),postProductInfoReq.getFirstCategoryName(),postProductInfoReq.getSecondCategoryName(),
+        postProductInfoReq.getThirdCategoryName(),postProductInfoReq.getPrice(),postProductInfoReq.getDeliveryTip(),postProductInfoReq.getCount(),
+        postProductInfoReq.getProductStatus(),postProductInfoReq.getTrade(),postProductInfoReq.getLocation(),
+        postProductInfoReq.getDescription(),postProductInfoReq.getSafePay()};
+
+        this.jdbcTemplate.update(postProductInfoQuery,postProductInfoParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        int productInfoId = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+
+        // 상품 이미지 등록
+        String postProductImgUrlsQuery = "INSERT INTO bunjang.ProductImgUrls (productInfoId, url1, url2, url3, url4, url5, url6, url7, url8, url9, url10, url11, url12)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Object[] postProductImgUrlsParams = new Object[]{productInfoId, postProductInfoReq.getUrl1(),postProductInfoReq.getUrl2(),postProductInfoReq.getUrl3(),
+        postProductInfoReq.getUrl4(),postProductInfoReq.getUrl5(),postProductInfoReq.getUrl6(),postProductInfoReq.getUrl7(),
+        postProductInfoReq.getUrl8(),postProductInfoReq.getUrl9(),postProductInfoReq.getUrl10(),postProductInfoReq.getUrl11(),postProductInfoReq.getUrl12()};
+
+        this.jdbcTemplate.update(postProductImgUrlsQuery,postProductImgUrlsParams);
+
+        // 상품 태그등록
+        String postProductTagsQuery = "INSERT INTO bunjang.ProductTags (productInfoId, tag1, tag2, tag3, tag4, tag5)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        Object[] postProductTagsParams = new Object[]{productInfoId,postProductInfoReq.getTag1(),postProductInfoReq.getTag2(),postProductInfoReq.getTag3(),
+        postProductInfoReq.getTag4(),postProductInfoReq.getTag5()};
+
+        return this.jdbcTemplate.update(postProductTagsQuery,postProductTagsParams);
+
+        /**
+         * 나중에 태그 쓸때마다 words 테이블에 자동 insert되게 해보기..
+         */
+
+    }
+
 
 }

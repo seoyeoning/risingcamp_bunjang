@@ -136,16 +136,21 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록 API
-     *//*
+     * 상품 등록 전 단계 API
+     * [POST] /bunjang/products/:userIdx/new-productInfo
+     */
     @ResponseBody
-    @PostMapping("/:userIdx/new-product")
-    public BaseResponse<String> postProduct() {
+    @PostMapping("/{userIdx}/new-productInfo")
+    public BaseResponse<String> postProductInfo(@PathVariable("userIdx") int userIdx,@RequestBody PostProductInfoReq postProductInfo) {
         try {
 
+            productService.postProductInfo(userIdx, postProductInfo);
+
+            String result = "상품 등록 전 단계가 성공하였습니다.";
+            return new BaseResponse<>(result);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
-    }*/
+    }
 }

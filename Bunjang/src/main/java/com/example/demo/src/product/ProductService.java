@@ -28,6 +28,15 @@ public class ProductService {
         this.jwtService = jwtService;
     }
 
+    // 상품 등록 전단계
+    public void postProductInfo(int userIdx, PostProductInfoReq postProductInfoReq) throws BaseException {
+        try {
 
+            int result = productDao.postProductInfo(userIdx,postProductInfoReq);
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }
