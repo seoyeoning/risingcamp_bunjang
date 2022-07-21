@@ -119,6 +119,23 @@ public class ProductController {
     }
 
     /**
+     * 상품 등록 세번째 카테고리 조회
+     * [GET] /:userIdx/new-product/first-category/second-category/third-category
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/new-product/first-category/second-category/third-category")
+    public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetThirdCategoryReq getThirdCategoryReq) {
+        try {
+            List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(getThirdCategoryReq);
+
+            return new BaseResponse<>(getThirdCategoryRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
      * 상품 등록 API
      *//*
     @ResponseBody
