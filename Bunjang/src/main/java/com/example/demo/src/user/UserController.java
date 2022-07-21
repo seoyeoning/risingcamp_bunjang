@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -42,6 +43,7 @@ public class UserController {
     private final UserService userService;
     @Autowired
     private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+
 
 
     public UserController(UserProvider userProvider, UserService userService, JwtService jwtService) {
@@ -156,31 +158,6 @@ public class UserController {
      * 유저정보변경 API
      * [PATCH] /users/:userIdx
      */
-//    @ResponseBody
-//    @PatchMapping("/{userIdx}")
-//    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
-//        try {
-///**
-//  *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = jwtService.getUserIdx();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //같다면 유저네임 변경
-//  **************************************************************************
-// */
-//            PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
-//            userService.modifyUserName(patchUserReq);
-//
-//            String result = "회원정보가 수정되었습니다.";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
-//    @RequestBody PostLoginReq postLoginReq
 
     @ResponseBody
     @PostMapping("/login")
@@ -193,4 +170,27 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+
+//    @GetMapping("/check/sendSMS")
+//    @ResponseBody
+//    public BaseResponse sendSMS(String phoneNumber) {
+//
+//        Random rand  = new Random();
+//        String numStr = "";
+//        for(int i=0; i<6; i++) {
+//            String ran = Integer.toString(rand.nextInt(10));
+//            numStr+=ran;
+//        }
+//
+//        System.out.println("수신자 번호 : " + phoneNumber);
+//        System.out.println("인증번호 : " + numStr);
+//        userService.certifiedPhoneNumber(phoneNumber,numStr);
+//        numStr;
+//        try {
+//
+//        }catch (BaseException exception){
+//            return new BaseResponse()
+//        }
+//    }
 }
