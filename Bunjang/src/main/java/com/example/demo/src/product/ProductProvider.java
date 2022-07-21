@@ -60,4 +60,15 @@ public class ProductProvider {
         }
     }
 
+    // 상품 등록 첫번째 카테고리 조회
+    public List<GetFirstCategoryRes> getFirstCategory() throws BaseException {
+        try {
+            List<GetFirstCategoryRes> getFirstCategoryRes = productDao.getFirstCategory();
+            return getFirstCategoryRes;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

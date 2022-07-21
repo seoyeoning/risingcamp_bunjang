@@ -88,6 +88,22 @@ public class ProductController {
     }
 
     /**
+     * 상품 등록 첫번째 카테고리 조회
+     * [GET] /:userIdx/new-product/first-category
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/new-product/first-category")
+    public BaseResponse<List<GetFirstCategoryRes>> getFirstCategory(@PathVariable("userIdx") int userIdx) {
+        try {
+            List<GetFirstCategoryRes> getFirstCategoryRes = productProvider.getFirstCategory();
+            return new BaseResponse<>(getFirstCategoryRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
      * 상품 등록 API
      *//*
     @ResponseBody
