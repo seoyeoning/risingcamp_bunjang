@@ -96,6 +96,19 @@ public class ProductDao {
                         rs.getString("categoryName"))
                 );
     }
+    // 상품 등록 두번째 카테고리 조회
+    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) {
+        String getSecondCategoryQuery = "select SecondCategory.categoryName\n" +
+                "from SecondCategory\n" +
+                "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
+                "where FirstCategory.categoryName = ?";
+        String getSecondCategoryParams = getSecondCategoryReq.getFirstCategoryName();
+
+        return this.jdbcTemplate.query(getSecondCategoryQuery,
+                (rs, rowNum) -> new GetSecondCategoryRes(
+                        rs.getString("categoryName")),
+                getSecondCategoryParams);
+    }
 
 
 }

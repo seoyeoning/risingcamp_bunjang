@@ -70,5 +70,15 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    // 상품 등록 두번째 카테고리 조회
+    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) throws BaseException {
+        try {
+            List<GetSecondCategoryRes> getSecondCategoryRes = productDao.getSecondCategory(getSecondCategoryReq);
+            return getSecondCategoryRes;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }

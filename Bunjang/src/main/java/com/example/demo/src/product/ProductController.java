@@ -102,6 +102,21 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    /**
+     * 상품 등록 두번째 카테고리 조회
+     * [GET] /:userIdx/new-product/first-category/second-category
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/new-product/first-category/second-category")
+    public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetSecondCategoryReq getSecondCategoryReq) {
+        try {
+            List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(getSecondCategoryReq);
+            return new BaseResponse<>(getSecondCategoryRes);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
     /**
      * 상품 등록 API
