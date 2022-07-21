@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
-public class PostProductInfoReq {
+public class PostProductReq {
 
     // 상품 정보들 넣기
     private String productName;

@@ -1,16 +1,11 @@
 package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.*;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
-import javax.sql.DataSource;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -29,10 +24,10 @@ public class ProductService {
     }
 
     // 상품 등록 전단계
-    public void postProductInfo(int userIdx, PostProductInfoReq postProductInfoReq) throws BaseException {
+    public void postProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
         try {
 
-            int result = productDao.postProductInfo(userIdx,postProductInfoReq);
+            int result = productDao.postProduct(userIdx,postProductReq);
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
