@@ -57,43 +57,43 @@ public class UserController {
      * [POST] /users
      */
     // Body
-    @ResponseBody
-    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
-    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-        //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
-        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-        // email에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
-        if (postUserReq.getEmail() == null) {
-            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
-        }
-        //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
-        if (!isRegexEmail(postUserReq.getEmail())) {
-            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-        }
-        try {
-            PostUserRes postUserRes = userService.createUser(postUserReq);
-            return new BaseResponse<>(postUserRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
+//    @ResponseBody
+//    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
+//    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
+//        //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
+//        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
+//        // email에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
+//        if (postUserReq.getEmail() == null) {
+//            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+//        }
+//        //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
+//        if (!isRegexEmail(postUserReq.getEmail())) {
+//            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+//        }
+//        try {
+//            PostUserRes postUserRes = userService.createUser(postUserReq);
+//            return new BaseResponse<>(postUserRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 
     /**
      * 로그인 API
      * [POST] /users/logIn
      */
-    @ResponseBody
-    @PostMapping("/log-in")
-    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) {
-        try {
-            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
-            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
-            PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
-            return new BaseResponse<>(postLoginRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
+//    @ResponseBody
+//    @PostMapping("/log-in")
+//    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) {
+//        try {
+//            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
+//            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+//            PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
+//            return new BaseResponse<>(postLoginRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 
     /**
@@ -156,28 +156,41 @@ public class UserController {
      * 유저정보변경 API
      * [PATCH] /users/:userIdx
      */
-    @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
-        try {
-/**
-  *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
-            //jwt에서 idx 추출.
-            int userIdxByJwt = jwtService.getUserIdx();
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-            //같다면 유저네임 변경
-  **************************************************************************
- */
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
-            userService.modifyUserName(patchUserReq);
+//    @ResponseBody
+//    @PatchMapping("/{userIdx}")
+//    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
+//        try {
+///**
+//  *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
+//            //jwt에서 idx 추출.
+//            int userIdxByJwt = jwtService.getUserIdx();
+//            //userIdx와 접근한 유저가 같은지 확인
+//            if(userIdx != userIdxByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            //같다면 유저네임 변경
+//  **************************************************************************
+// */
+//            PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
+//            userService.modifyUserName(patchUserReq);
+//
+//            String result = "회원정보가 수정되었습니다.";
+//            return new BaseResponse<>(result);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+//    @RequestBody PostLoginReq postLoginReq
 
-            String result = "회원정보가 수정되었습니다.";
-            return new BaseResponse<>(result);
+    @ResponseBody
+    @PostMapping("/log-in")
+    public BaseResponse<PostLoginRes> logIn(String phone) {
+        try {
+            phone="01046186779";
+            PostLoginRes postLoginRes = userProvider.logIn(phone);
+            return new BaseResponse<>(postLoginRes);
         } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 }
