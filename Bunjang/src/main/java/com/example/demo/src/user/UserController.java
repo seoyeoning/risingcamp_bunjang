@@ -183,11 +183,11 @@ public class UserController {
 //    @RequestBody PostLoginReq postLoginReq
 
     @ResponseBody
-    @PostMapping("/log-in")
-    public BaseResponse<PostLoginRes> logIn(String phone) {
+    @PostMapping("/login")
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) {
         try {
-            phone="01046186779";
-            PostLoginRes postLoginRes = userProvider.logIn(phone);
+
+            PostLoginRes postLoginRes = userService.logIn(postLoginReq);
             return new BaseResponse<>(postLoginRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

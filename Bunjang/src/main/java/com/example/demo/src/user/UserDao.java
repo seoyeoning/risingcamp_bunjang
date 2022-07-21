@@ -66,19 +66,19 @@ public class UserDao {
 //        return this.jdbcTemplate.queryForObject(lastInserIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
 //    }
 
-//        public int createUser(PostLoginReq postLoginReq) {
-//        String createUserQuery = "insert into Users (userName, firstNumber, birthdate, newsAgency, phone) VALUES (?,?,?,?,?)"; // 실행될 동적 쿼리문
-//        Object[] createUserParams = new Object[]{postLoginReq.getUserName(),postLoginReq.getFirstNumber(),
-//                postLoginReq.getBirthdate(),postLoginReq.getNewsAgency(),postLoginReq.getPhone()}; // 동적 쿼리의 ?부분에 주입될 값
-//        this.jdbcTemplate.update(createUserQuery, createUserParams);
-//
-//        String lastInsertIdQuery = "select last_insert_id()"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
-//        int userId =this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
-//        String createStoreQuery="insert into Stores (userId, storeName) VALUES (?,?)";
-//        Object[] createStoreParams= new Object[]{userId,postLoginReq.getStoreName()};
-//        this.jdbcTemplate.update(createStoreQuery,createStoreParams);
-//        return userId;
-//    }
+        public int createUser(PostLoginReq postLoginReq) {
+        String createUserQuery = "insert into Users (userName, firstNumber, birthdate, newsAgency, phone) VALUES (?,?,?,?,?)"; // 실행될 동적 쿼리문
+        Object[] createUserParams = new Object[]{postLoginReq.getUserName(),postLoginReq.getFirstNumber(),
+                postLoginReq.getBirthdate(),postLoginReq.getNewsAgency(),postLoginReq.getPhone()}; // 동적 쿼리의 ?부분에 주입될 값
+        this.jdbcTemplate.update(createUserQuery, createUserParams);
+
+        String lastInsertIdQuery = "select userId from Users where phone=?"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
+        int userId =this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class, postLoginReq.getPhone()); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
+        String createStoreQuery="insert into Stores (userId, storeName) VALUES (?,?)";
+        Object[] createStoreParams= new Object[]{userId,postLoginReq.getStoreName()};
+        this.jdbcTemplate.update(createStoreQuery,createStoreParams);
+        return userId;
+    }
 
     // 이메일 확인
     public int checkEmail(String email) {
@@ -115,13 +115,18 @@ public class UserDao {
 //    }
 
     //    // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
-    public User getPwd(String phone) {
-        String getQuery = "select userId from User where phone = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
-        String getParams = phone; // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
+    public User getUserId(PostLoginReq postLoginReq) {
+        String getQuery = "select * from Users where phone = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
+        String getParams = postLoginReq.getPhone(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
 
         return this.jdbcTemplate.queryForObject(getQuery,
                 (rs, rowNum) -> new User(
-                        rs.getInt("userId")
+                        rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("firstNumber"),
+                        rs.getString("birthdate"),
+                        rs.getString("newsAgency"),
+                        rs.getString("phone")
                 ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getParams
         ); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환

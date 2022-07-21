@@ -79,4 +79,27 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
+
+        if(userProvider.checkAccount(postLoginReq)!=0){
+            User user=userDao.getUserId(postLoginReq);
+            int userId=user.getUserIdx();
+            String jwt = jwtService.createJwt(userId);
+            return new PostLoginRes(userId,jwt);
+        }else {
+            try {
+                int userIdx = userDao.createUser(postLoginReq);
+
+                String jwt = jwtService.createJwt(userIdx);
+                return new PostLoginRes(userIdx,jwt);
+
+            } catch (Exception exception) {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+
+
+//        }
+    }
 }

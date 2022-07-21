@@ -12,5 +12,9 @@ import lombok.*;
  */
 public class User {
     private int userIdx;
-//    private String phone;
+    private String userName;
+    private String firstNumber;
+    private String birthdate;
+    private String newsAgency;
+    private String phone;
 }

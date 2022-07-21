@@ -63,25 +63,14 @@ public class UserProvider {
 //        }
 //    }
 
-        public PostLoginRes logIn(String phone) throws BaseException {
-//            postLoginReq.getPhone().equals(userDao.getPwd(postLoginReq))
-        if (true) {
-            int userId = userDao.getPwd(phone).getUserIdx();
-            String jwt = jwtService.createJwt(userId);
-            return new PostLoginRes(userId,jwt);
 
-        } else {
-            throw new BaseException(DATABASE_ERROR);
-//            try {
-//                int userIdx = userDao.createUser(postLoginReq);
-//
-//                String jwt = jwtService.createJwt(userIdx);
-//                return new PostLoginRes(userIdx,jwt);
-//
-//            } catch (Exception exception) {
-//                throw new BaseException(DATABASE_ERROR);
-//            }
-        }
+
+    public int checkAccount(PostLoginReq postLoginReq) {
+       try {
+           return userDao.getUserId(postLoginReq).getUserIdx();
+       } catch (Exception exception){
+           return 0;
+       }
     }
 
     // 해당 이메일이 이미 User Table에 존재하는지 확인
@@ -124,5 +113,6 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
 
 }
