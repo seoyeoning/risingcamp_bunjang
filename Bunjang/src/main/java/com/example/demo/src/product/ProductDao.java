@@ -77,8 +77,8 @@ public class ProductDao {
                         rs.getString("url1"),
                         rs.getString("price"),
                         rs.getString("productName"),
-                        rs.getString("timeDiff"),
                         rs.getString("location"),
+                        rs.getString("timeDiff"),
                         rs.getString("safePay"),
                         rs.getInt("bookmarkCnt"))
         );
