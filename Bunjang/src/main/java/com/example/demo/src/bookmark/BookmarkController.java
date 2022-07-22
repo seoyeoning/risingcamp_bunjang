@@ -40,10 +40,10 @@ public class BookmarkController {
      * [POST] /bunjang/bookmarks/:storeIdx/:productIdx
      */
     @ResponseBody
-    @PostMapping("/{storeIdx}/{productIdx}")
-    public BaseResponse<String> createPatchBookmark(@PathVariable("storeIdx") int storeIdx, @PathVariable("productIdx") int productIdx) {
+    @PostMapping("/{userIdx}/{productIdx}")
+    public BaseResponse<String> createPatchBookmark(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
-            String result = bookmarkService.createPatchBookmark(storeIdx,productIdx);
+            String result = bookmarkService.createPatchBookmark(userIdx,productIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

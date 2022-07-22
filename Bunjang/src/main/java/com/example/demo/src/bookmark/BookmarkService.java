@@ -31,14 +31,14 @@ public class BookmarkService {
     }
 
     // 찜 추가/취소
-    public String createPatchBookmark(int storeIdx, int productIdx) throws BaseException {
+    public String createPatchBookmark(int userIdx, int productIdx) throws BaseException {
         try{
-            if(bookmarkProvider.checkBookmark(storeIdx,productIdx) == 1){
-                int b = bookmarkDao.patchBookmark(storeIdx,productIdx);
+            if(bookmarkProvider.checkBookmark(userIdx,productIdx) == 1){
+                int b = bookmarkDao.patchBookmark(userIdx,productIdx);
                 String result = "상품이 찜 목록에서 삭제되었습니다.";
                 return result;
             } else {
-                int a = bookmarkDao.createBookmark(storeIdx, productIdx);
+                int a = bookmarkDao.createBookmark(userIdx, productIdx);
                 String result = "상품이 찜 목록에 추가되었습니다.";
                 return result;
             }

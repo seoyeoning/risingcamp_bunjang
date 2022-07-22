@@ -140,7 +140,7 @@ public class ProductController {
      * [POST] /bunjang/products/:userIdx/new-product
      */
     @ResponseBody
-    @PostMapping("/{userIdx}/new-productInfo")
+    @PostMapping("/{userIdx}/new-product")
     public BaseResponse<String> postProduct(@PathVariable("userIdx") int userIdx,@RequestBody PostProductReq postProduct) {
         try {
 

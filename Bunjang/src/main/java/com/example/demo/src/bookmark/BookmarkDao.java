@@ -20,25 +20,25 @@ public class BookmarkDao {
     }
 
     // 찜 추가
-    public int createBookmark(int storeIdx, int productIdx) {
-        String createBookmarkQuery = "INSERT INTO bunjang.BookMarks (storeId, productId ) VALUES (?, ?)";
-        Object[] createBookmarkParams = new Object[]{storeIdx,productIdx};
+    public int createBookmark(int userIdx, int productIdx) {
+        String createBookmarkQuery = "INSERT INTO bunjang.BookMarks (userId, productId ) VALUES (?, ?)";
+        Object[] createBookmarkParams = new Object[]{userIdx,productIdx};
         return this.jdbcTemplate.update(createBookmarkQuery,createBookmarkParams);
     }
     // 찜 여부 확인
-    public int checkBookmark(int storeIdx, int productIdx) {
+    public int checkBookmark(int userIdx, int productIdx) {
         String checkBookmarkQuery = "select exists(select *\n" +
                 "from BookMarks\n" +
-                "where BookMarks.storeId = ? and BookMarks.productId = ?)";
-        Object[] checkBookmarkParams = new Object[]{storeIdx,productIdx};
+                "where BookMarks.userId = ? and BookMarks.productId = ?)";
+        Object[] checkBookmarkParams = new Object[]{userIdx,productIdx};
         return this.jdbcTemplate.queryForObject(checkBookmarkQuery,
                 int.class,
         checkBookmarkParams);
     }
     // 찜 취소
-    public int patchBookmark(int storeIdx, int productIdx) {
-        String patchBookmarkQuery = "DELETE FROM bunjang.BookMarks WHERE storeId = ? and productId = ?";
-        Object[] patchBookmarkParams = new Object[]{storeIdx,productIdx};
+    public int patchBookmark(int userIdx, int productIdx) {
+        String patchBookmarkQuery = "DELETE FROM bunjang.BookMarks WHERE userId = ? and productId = ?";
+        Object[] patchBookmarkParams = new Object[]{userIdx,productIdx};
         return this.jdbcTemplate.update(patchBookmarkQuery,patchBookmarkParams);
     }
 

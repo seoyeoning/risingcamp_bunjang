@@ -28,9 +28,9 @@ public class BookmarkProvider {
     }
 
     // 찜 여부 확인
-    public int checkBookmark(int storeIdx, int productIdx) throws BaseException {
+    public int checkBookmark(int userIdx, int productIdx) throws BaseException {
         try {
-            return bookmarkDao.checkBookmark(storeIdx,productIdx);
+            return bookmarkDao.checkBookmark(userIdx,productIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
