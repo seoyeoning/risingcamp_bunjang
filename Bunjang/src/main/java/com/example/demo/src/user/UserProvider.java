@@ -103,17 +103,17 @@ public class UserProvider {
         }
     }
 
-    public int checkNum(PostAuthNumReq postAuthNumReq) throws BaseException{
+    public int checkNum(String phone, String num) throws BaseException{
         try {
-             return userDao.checkNum(postAuthNumReq);
+             return userDao.checkNum(phone, num);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public int checkAccount(PostLoginReq postLoginReq) throws BaseException{
+    public int checkAccount(String phone) throws BaseException{
         try {
-            return userDao.checkAccount(postLoginReq);
+            return userDao.checkAccount(phone);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

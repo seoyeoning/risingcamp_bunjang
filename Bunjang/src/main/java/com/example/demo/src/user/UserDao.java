@@ -188,18 +188,20 @@ public class UserDao {
 //                );
 //    }
 
-    public int checkNum(PostAuthNumReq postAuthNumReq) {
-        String checkAuthQuery = "select exists(select phone, number from AuthNumbers where phone=? and number=?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
-        Object[] checkAuthParams = new Object[]{postAuthNumReq.getPhone(), postAuthNumReq.getNumber()};
+    public int checkNum(String phone, String number) {
+        String checkAuthQuery = "select exists(select phone, number from AuthNumbers where phone=? and number=?)";
+        Object[] checkAuthParams = new Object[]{phone, number};
         return this.jdbcTemplate.queryForObject(checkAuthQuery,
                 int.class,
                 checkAuthParams);
     }
 
-    public int checkAccount(PostLoginReq postLoginReq) {
-        String checkAccountQuery = "select exists(select phone from AuthNumbers where phone=?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+    public int checkAccount(String phone) {
+        String checkAccountQuery = "select exists(select phone from Users where phone=?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
         return this.jdbcTemplate.queryForObject(checkAccountQuery,
                 int.class,
-                postLoginReq.getPhone());
+               phone);
     }
+
+
 }

@@ -75,10 +75,11 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping("/check")
-    public BaseResponse checkAccount(@RequestBody PostLoginReq postLoginReq){
+    @GetMapping("/check/{phone}")
+    public BaseResponse checkAccount(@PathVariable("phone") String phone){
         try {
-            int result = userProvider.checkAccount(postLoginReq);
+
+            int result = userProvider.checkAccount(phone);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -122,13 +123,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/check/sendSMS")
+    @GetMapping("/check/sendSMS/{phone}/{number}")
     @ResponseBody
-    public BaseResponse checkAuth(@RequestBody PostAuthNumReq postAuthNumReq){
-        if(postAuthNumReq.getNumber().length()!=6) return new BaseResponse<>(USERS_LENGTH_USER_NUMBER);
-
+    public BaseResponse checkAuth(@PathVariable("phone") String phone,@PathVariable("number") String number){
+        if(number.length()!=6) return new BaseResponse<>(USERS_LENGTH_USER_NUMBER);
         try {
-            if(userProvider.checkNum(postAuthNumReq)!=1)
+            if(userProvider.checkNum(phone, number)!=1)
                 return new BaseResponse<>(POST_USERS_EXISTS_NUMBER);
             return new BaseResponse<>("성공");
         }catch (BaseException exception){
