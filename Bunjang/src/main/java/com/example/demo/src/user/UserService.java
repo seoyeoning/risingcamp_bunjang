@@ -58,13 +58,19 @@ public class UserService {
     }
 
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
+            try {
+                User user=userDao.getUserId(postLoginReq);
+                int userId=user.getUserIdx();
+                String jwt = jwtService.createJwt(userId);
+                return new PostLoginRes(userId,jwt);
 
-        if(userProvider.checkAccount(postLoginReq)!=0){
-            User user=userDao.getUserId(postLoginReq);
-            int userId=user.getUserIdx();
-            String jwt = jwtService.createJwt(userId);
-            return new PostLoginRes(userId,jwt);
-        }else {
+            } catch (Exception exception) {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+
+
+    public PostLoginRes sighIn(PostLoginReq postLoginReq) throws BaseException{
             try {
                 int userIdx = userDao.createUser(postLoginReq);
 
@@ -75,7 +81,7 @@ public class UserService {
                 throw new BaseException(DATABASE_ERROR);
             }
         }
-    }
+
 
     public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
 
@@ -101,6 +107,22 @@ public class UserService {
             System.out.println(e.getCode());
         }
 
+    }
+
+    public void createAuth(PostAuthNumReq postAuthNumReq)throws BaseException{
+        try {
+            userDao.createAuth(postAuthNumReq);
+        } catch (Exception exception) {
+        throw new BaseException(DATABASE_ERROR);
+    }
+    }
+
+    public void deleteAuth(PostAuthNumReq postAuthNumReq)throws BaseException{
+        try {
+            userDao.deleteAut(postAuthNumReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 
 }

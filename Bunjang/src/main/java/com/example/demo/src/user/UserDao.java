@@ -132,6 +132,8 @@ public class UserDao {
         ); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
 
+
+
     // User 테이블에 존재하는 전체 유저들의 정보 조회
     public List<GetUserRes> getUsers() {
         String getUsersQuery = "select * from User"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
@@ -168,5 +170,44 @@ public class UserDao {
                         rs.getString("Email"),
                         rs.getString("password")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getUserParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
+    }
+
+
+    public void createAuth(PostAuthNumReq postAuthNumReq){
+            String createAuthQuery="insert into AuthNumbers(phone, number) values (?,?)";
+            Object[] createAuthParams=new Object[]{postAuthNumReq.getPhone(),postAuthNumReq.getNumber()};
+            this.jdbcTemplate.update(createAuthQuery,createAuthParams);
+    }
+
+    public void deleteAut(PostAuthNumReq postAuthNumReq){
+            String deleteAuthQuery="delete from AuthNumbers where phone=? and number=?;";
+            Object[] deleteAuthParams=new Object[]{postAuthNumReq.getPhone(),postAuthNumReq.getNumber()};
+            this.jdbcTemplate.update(deleteAuthQuery,deleteAuthParams);
+    }
+
+//    public GetAuthNumRes checkAuth(PostAuthNumReq postAuthNumReq){
+//            String checkAuthQuery="select phone, number from AuthNumbers where phone=? and number=?";
+//        Object[] checkAuthParams=new Object[]{postAuthNumReq.getPhone(),postAuthNumReq.getNumber()};
+//        return this.jdbcTemplate.queryForObject(checkAuthQuery,
+//                (rs, rowNum) -> new GetAuthNumRes(
+//                        rs.getString("phone"),
+//                        rs.getString("number")),
+//                checkAuthParams
+//                );
+//    }
+
+    public int checkNum(PostAuthNumReq postAuthNumReq) {
+        String checkAuthQuery = "select exists(select phone, number from AuthNumbers where phone=? and number=?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+        Object[] checkAuthParams = new Object[]{postAuthNumReq.getPhone(), postAuthNumReq.getNumber()};
+        return this.jdbcTemplate.queryForObject(checkAuthQuery,
+                int.class,
+                checkAuthParams);
+    }
+
+    public int checkAccount(PostLoginReq postLoginReq) {
+        String checkAccountQuery = "select exists(select phone from AuthNumbers where phone=?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+        return this.jdbcTemplate.queryForObject(checkAccountQuery,
+                int.class,
+                postLoginReq.getPhone());
     }
 }

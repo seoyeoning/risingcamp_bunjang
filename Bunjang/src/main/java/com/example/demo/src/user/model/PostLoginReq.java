@@ -18,5 +18,4 @@ public class PostLoginReq {
     private String newsAgency;
     private String phone;
     private String storeName;
-    private String authNumber;
 }

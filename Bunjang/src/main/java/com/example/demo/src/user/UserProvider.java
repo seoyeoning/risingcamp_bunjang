@@ -1,9 +1,7 @@
 package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,15 +62,6 @@ public class UserProvider {
 //    }
 
 
-
-    public int checkAccount(PostLoginReq postLoginReq) {
-       try {
-           return userDao.getUserId(postLoginReq).getUserIdx();
-       } catch (Exception exception){
-           return 0;
-       }
-    }
-
     // 해당 이메일이 이미 User Table에 존재하는지 확인
     public int checkEmail(String email) throws BaseException {
         try {
@@ -109,6 +98,22 @@ public class UserProvider {
         try {
             GetUserRes getUserRes = userDao.getUser(userIdx);
             return getUserRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkNum(PostAuthNumReq postAuthNumReq) throws BaseException{
+        try {
+             return userDao.checkNum(postAuthNumReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkAccount(PostLoginReq postLoginReq) throws BaseException{
+        try {
+            return userDao.checkAccount(postLoginReq);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
