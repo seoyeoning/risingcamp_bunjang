@@ -50,9 +50,9 @@ public class ProductProvider {
     }
 
     // 상품 등록 태그 조회
-    public List<GetTagsRes> getTags(GetTagsReq getTagsReq) throws BaseException{
+    public List<GetTagsRes> getTags(String tagWord) throws BaseException{
         try {
-            List<GetTagsRes> getTagsRes = productDao.getTags(getTagsReq);
+            List<GetTagsRes> getTagsRes = productDao.getTags(tagWord);
             return getTagsRes;
 
         } catch (Exception exception) {

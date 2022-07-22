@@ -73,13 +73,13 @@ public class ProductController {
 
     /**
      * 상품 등록 태그 조회 API
-     * [GET] /:userIdx/new-product/tags
+     * [GET] /:userIdx/new-product/tags/:tagWord
      */
     @ResponseBody
-    @GetMapping("/{userIdx}/new-product/tags")
-    public BaseResponse<List<GetTagsRes>> getTags(@PathVariable("userIdx") int userIdx,@RequestBody GetTagsReq getTagsReq) {
+    @GetMapping("/{userIdx}/new-product/tags/{tagWord}")
+    public BaseResponse<List<GetTagsRes>> getTags(@PathVariable("userIdx") int userIdx,@PathVariable String tagWord) {
         try {
-            List<GetTagsRes> getTagsRes = productProvider.getTags(getTagsReq);
+            List<GetTagsRes> getTagsRes = productProvider.getTags(tagWord);
             return new BaseResponse<>(getTagsRes);
 
         } catch (BaseException exception) {
@@ -146,7 +146,7 @@ public class ProductController {
 
             productService.postProduct(userIdx, postProduct);
 
-            String result = "상품 등록 전 단계가 성공하였습니다.";
+            String result = "상품 등록이 완료되었습니다.";
             return new BaseResponse<>(result);
 
         } catch (BaseException exception) {

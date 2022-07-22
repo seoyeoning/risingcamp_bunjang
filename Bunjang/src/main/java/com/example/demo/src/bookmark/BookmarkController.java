@@ -49,5 +49,4 @@ public class BookmarkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
 }

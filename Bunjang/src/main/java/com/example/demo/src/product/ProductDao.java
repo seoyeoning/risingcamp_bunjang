@@ -74,11 +74,11 @@ public class ProductDao {
     }
 
     // 상품 등록 태그 조회
-    public List<GetTagsRes> getTags(GetTagsReq getTagsReq) {
+    public List<GetTagsRes> getTags(String tagWord) {
         String getTagsQuery = "select word\n" +
                 "from Words\n" +
                 "where word like concat('%',?,'%')";
-        String getTagsParams = getTagsReq.getWord();
+        String getTagsParams = tagWord;
 
         return this.jdbcTemplate.query(getTagsQuery,
                 (rs, rowNum) -> new GetTagsRes(
