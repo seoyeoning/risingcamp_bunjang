@@ -89,10 +89,10 @@ public class ProductController {
 
     /**
      * 상품 등록 첫번째 카테고리 조회
-     * [GET] /:userIdx/new-product/first-category
+     * [GET] /:userIdx/new-product/categories
      */
     @ResponseBody
-    @GetMapping("/{userIdx}/new-product/first-category")
+    @GetMapping("/{userIdx}/new-product/categories")
     public BaseResponse<List<GetFirstCategoryRes>> getFirstCategory(@PathVariable("userIdx") int userIdx) {
         try {
             List<GetFirstCategoryRes> getFirstCategoryRes = productProvider.getFirstCategory();
@@ -104,13 +104,13 @@ public class ProductController {
     }
     /**
      * 상품 등록 두번째 카테고리 조회
-     * [GET] /:userIdx/new-product/first-category/second-category
+     * [GET] /:userIdx/new-product/categories/:first
      */
     @ResponseBody
-    @GetMapping("/{userIdx}/new-product/first-category/second-category")
-    public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetSecondCategoryReq getSecondCategoryReq) {
+    @GetMapping("/{userIdx}/new-product/categories/{first}")
+    public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@PathVariable("first") String firstCategoryName) {
         try {
-            List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(getSecondCategoryReq);
+            List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(firstCategoryName);
             return new BaseResponse<>(getSecondCategoryRes);
 
         }catch (BaseException exception) {
@@ -120,13 +120,13 @@ public class ProductController {
 
     /**
      * 상품 등록 세번째 카테고리 조회
-     * [GET] /:userIdx/new-product/first-category/second-category/third-category
+     * [GET] /:userIdx/new-product/categories/:first/:second
      */
     @ResponseBody
-    @GetMapping("/{userIdx}/new-product/first-category/second-category/third-category")
-    public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetThirdCategoryReq getThirdCategoryReq) {
+    @GetMapping("/{userIdx}/new-product/categories/{first}/{second}")
+    public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@PathVariable("first") String firstCategoryName,@PathVariable("second") String secondCategoryName) {
         try {
-            List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(getThirdCategoryReq);
+            List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(firstCategoryName,secondCategoryName);
 
             return new BaseResponse<>(getThirdCategoryRes);
 
@@ -136,7 +136,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록 전 단계 API
+     * 상품 등록 API
      * [POST] /bunjang/products/:userIdx/new-product
      */
     @ResponseBody

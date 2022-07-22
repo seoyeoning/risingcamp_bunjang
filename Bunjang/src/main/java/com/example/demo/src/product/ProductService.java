@@ -23,7 +23,7 @@ public class ProductService {
         this.jwtService = jwtService;
     }
 
-    // 상품 등록 전단계
+    // 상품 등록
     public void postProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
         try {
 

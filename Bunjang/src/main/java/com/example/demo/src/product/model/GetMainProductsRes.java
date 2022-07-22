@@ -12,10 +12,13 @@ import java.util.List;
 
 public class GetMainProductsRes {
 
+    private int productId;
     private String productImgUrl;
     private String price;
     private String productName;
     private String location;
+    private String timeDiff;
     private String safePay;
+    private int bookmarkCnt;
 
 }

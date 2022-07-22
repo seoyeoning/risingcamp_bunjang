@@ -58,18 +58,29 @@ public class ProductDao {
 
     // 메인 화면 추천 상품 조회
     public List<GetMainProductsRes> getMainProducts(){
-        String getMainProductsQuery = "select productImgUrl, format(price, '###,###') as price,productName, location, safePay\n" +
+        String getMainProductsQuery = "select Products.id, url1, format(price, '###,###') as price, productName, location,\n" +
+                "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
+                "then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
+                "    when TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()) < 24\n" +
+                "    then concat(TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()), '시간 전')\n" +
+                "    WHEN TIMESTAMPDIFF(DAY ,Products.createAt, NOW()) < 30\n" +
+                "    then concat(TIMESTAMPDIFF(DAY ,Products.createAt, NOW()), '일 전')\n" +
+                "end) as timeDiff , safePay, count( BookMarks.productId) as bookmarkCnt\n" +
                 "from Products\n" +
-                "inner join ProductImgUrls on Products.productId = ProductImgUrls.productId\n" +
-                "group by Products.productId";
+                "inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
+                "left join BookMarks on BookMarks.productId = Products.id\n" +
+                "group by Products.id";
 
         return this.jdbcTemplate.query(getMainProductsQuery,
                 (rs, rowNum) -> new GetMainProductsRes(
-                        rs.getString("productImgUrl"),
+                        rs.getInt("id"),
+                        rs.getString("url1"),
                         rs.getString("price"),
                         rs.getString("productName"),
+                        rs.getString("timeDiff"),
                         rs.getString("location"),
-                        rs.getString("safePay"))
+                        rs.getString("safePay"),
+                        rs.getInt("bookmarkCnt"))
         );
     }
 
@@ -97,12 +108,12 @@ public class ProductDao {
                 );
     }
     // 상품 등록 두번째 카테고리 조회
-    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) {
+    public List<GetSecondCategoryRes> getSecondCategory(String firstCategoryName) {
         String getSecondCategoryQuery = "select SecondCategory.categoryName\n" +
                 "from SecondCategory\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
                 "where FirstCategory.categoryName = ?";
-        String getSecondCategoryParams = getSecondCategoryReq.getFirstCategoryName();
+        String getSecondCategoryParams = firstCategoryName;
 
         return this.jdbcTemplate.query(getSecondCategoryQuery,
                 (rs, rowNum) -> new GetSecondCategoryRes(
@@ -110,13 +121,13 @@ public class ProductDao {
                 getSecondCategoryParams);
     }
     // 상품 등록 세번째 카테고리 조회
-    public List<GetThirdCategoryRes> getThirdCategory(GetThirdCategoryReq getThirdCategoryReq) {
+    public List<GetThirdCategoryRes> getThirdCategory(String firstCategoryName, String secondCategoryName) {
         String getThirdCategoryQuery = "select ThirdCategory.categoryName\n" +
                 "from ThirdCategory\n" +
                 "inner join SecondCategory on SecondCategory.secondCategoryId = ThirdCategory.secondCategoryId\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
                 "where FirstCategory.categoryName = ? and SecondCategory.categoryName = ?";
-        Object[] getThirdCategoryParams = new Object[]{getThirdCategoryReq.getFirstCategoryName(),getThirdCategoryReq.getSecondCategoryName()};
+        Object[] getThirdCategoryParams = new Object[]{firstCategoryName,secondCategoryName};
 
         return this.jdbcTemplate.query(getThirdCategoryQuery,
                 (rs, rowNum) -> new GetThirdCategoryRes(
@@ -124,7 +135,7 @@ public class ProductDao {
                 getThirdCategoryParams);
     }
 
-    // 상품 등록 전단계
+    // 상품 등록
     public int postProduct(int userIdx, PostProductReq postProductReq) {
 
         // 상품 정보 입력
