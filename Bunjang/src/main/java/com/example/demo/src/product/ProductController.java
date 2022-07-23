@@ -119,7 +119,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록 세번째 카테고리 조회
+     * 상품 등록 세번째 카테고리 조회!
      * [POST] /:userIdx/new-product/categories/:first/:second
      */
     @ResponseBody
