@@ -41,6 +41,7 @@ public class ProductController {
     @GetMapping("/{productIdx}")
     public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
 
+<<<<<<< HEAD
         try {
             GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
 
@@ -66,10 +67,40 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+=======
+    /** 상품 상세 페이지 조회 API
+     * [GET] /:productIdx
+     */
+    @ResponseBody
+    @GetMapping("/{productIdx}")
+    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
+>>>>>>> test_roomq
 
+        try {
+            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
 
+            return new BaseResponse<>(getProductDetailRes);
 
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
+    /** 메인화면 추천 상품 조회 API
+     * [GET]
+     */
+    @ResponseBody
+    @GetMapping("")
+    public BaseResponse<List<GetMainProductsRes>> getMainProducts() {
+        try {
+            List<GetMainProductsRes> getMainProductsRes = productProvider.getMainProducts();
+
+            return new BaseResponse<>(getMainProductsRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
     /**
      * 상품 등록 태그 조회 API
@@ -104,13 +135,13 @@ public class ProductController {
     }
     /**
      * 상품 등록 두번째 카테고리 조회
-     * [POST] /:userIdx/new-product/categories/:first
+     * [POST] /:userIdx/new-product/categories/:firstIdx
      */
     @ResponseBody
-    @PostMapping("/{userIdx}/new-product/categories/second")
-    public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetSecondCategoryReq getSecondCategoryReq) {
+    @PostMapping("/{userIdx}/new-product/categories/{firstIdx}")
+    public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@PathVariable("firstIdx") int firstIdx) {
         try {
-            List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(getSecondCategoryReq);
+            List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(firstIdx);
             return new BaseResponse<>(getSecondCategoryRes);
 
         }catch (BaseException exception) {
@@ -119,14 +150,14 @@ public class ProductController {
     }
 
     /**
-     * 상품 등록 세번째 카테고리 조회
-     * [POST] /:userIdx/new-product/categories/:first/:second
+     * 상품 등록 세번째 카테고리 조회!
+     * [POST] /:userIdx/new-product/categories/:firstIdx/:secondIdx
      */
     @ResponseBody
-    @PostMapping("/{userIdx}/new-product/categories/third")
-    public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@RequestBody GetThirdCategoryReq getThirdCategoryReq) {
+    @PostMapping("/{userIdx}/new-product/categories/{firstIdx}/{secondIdx}")
+    public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@PathVariable("firstIdx") int firstIdx,@PathVariable("secondIdx") int secondIdx ) {
         try {
-            List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(getThirdCategoryReq);
+            List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(firstIdx,secondIdx);
 
             return new BaseResponse<>(getThirdCategoryRes);
 

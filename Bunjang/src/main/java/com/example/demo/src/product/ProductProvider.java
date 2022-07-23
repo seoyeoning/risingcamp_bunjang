@@ -72,9 +72,9 @@ public class ProductProvider {
         }
     }
     // 상품 등록 두번째 카테고리 조회
-    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) throws BaseException {
+    public List<GetSecondCategoryRes> getSecondCategory(int firstIdx) throws BaseException {
         try {
-            List<GetSecondCategoryRes> getSecondCategoryRes = productDao.getSecondCategory(getSecondCategoryReq);
+            List<GetSecondCategoryRes> getSecondCategoryRes = productDao.getSecondCategory(firstIdx);
             return getSecondCategoryRes;
 
         } catch (Exception exception) {
@@ -82,9 +82,9 @@ public class ProductProvider {
         }
     }
     // 상품 등록 세번째 카테고리 조회
-    public List<GetThirdCategoryRes> getThirdCategory(GetThirdCategoryReq getThirdCategoryReq) throws BaseException {
+    public List<GetThirdCategoryRes> getThirdCategory(int firstIdx, int secondIdx) throws BaseException {
         try {
-            List<GetThirdCategoryRes> getThirdCategoryRes = productDao.getThirdCategory(getThirdCategoryReq);
+            List<GetThirdCategoryRes> getThirdCategoryRes = productDao.getThirdCategory(firstIdx, secondIdx);
 
             return getThirdCategoryRes;
 

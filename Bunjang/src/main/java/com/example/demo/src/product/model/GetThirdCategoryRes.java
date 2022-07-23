@@ -10,5 +10,6 @@ import lombok.*;
 public class GetThirdCategoryRes {
 
     private String thirdCategoryName;
+    private int thirdCategoryId;
 
 }
