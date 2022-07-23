@@ -154,30 +154,32 @@ public class ProductDao {
                 );
     }
     // 상품 등록 두번째 카테고리 조회
-    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) {
-        String getSecondCategoryQuery = "select SecondCategory.categoryName\n" +
+    public List<GetSecondCategoryRes> getSecondCategory(int firstIdx) {
+        String getSecondCategoryQuery = "select SecondCategory.categoryName, SecondCategory.secondCategoryId\n" +
                 "from SecondCategory\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
-                "where FirstCategory.categoryName = ?";
-        String getSecondCategoryParams = getSecondCategoryReq.getFirstCategoryName();
+                "where FirstCategory.firstCategoryId = ?";
+        int getSecondCategoryParams = firstIdx;
 
         return this.jdbcTemplate.query(getSecondCategoryQuery,
                 (rs, rowNum) -> new GetSecondCategoryRes(
-                        rs.getString("categoryName")),
+                        rs.getString("categoryName"),
+                        rs.getInt("secondCategoryId")),
                 getSecondCategoryParams);
     }
     // 상품 등록 세번째 카테고리 조회
-    public List<GetThirdCategoryRes> getThirdCategory(GetThirdCategoryReq getThirdCategoryReq) {
-        String getThirdCategoryQuery = "select ThirdCategory.categoryName\n" +
+    public List<GetThirdCategoryRes> getThirdCategory(int firstIdx, int secondIdx) {
+        String getThirdCategoryQuery = "select ThirdCategory.categoryName, ThirdCategory.thirdCategoryId \n" +
                 "from ThirdCategory\n" +
                 "inner join SecondCategory on SecondCategory.secondCategoryId = ThirdCategory.secondCategoryId\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
-                "where FirstCategory.categoryName = ? and SecondCategory.categoryName = ?";
-        Object[] getThirdCategoryParams = new Object[]{getThirdCategoryReq.getFirstCategoryName(),getThirdCategoryReq.getSecondCategoryName()};
+                "where FirstCategory.firstCategoryId = ? and SecondCategory.secondCategoryId = ?";
+        Object[] getThirdCategoryParams = new Object[]{firstIdx,secondIdx};
 
         return this.jdbcTemplate.query(getThirdCategoryQuery,
                 (rs, rowNum) -> new GetThirdCategoryRes(
-                        rs.getString("categoryName")),
+                        rs.getString("categoryName"),
+                        rs.getInt("thirdCategoryId")),
                 getThirdCategoryParams);
     }
 
