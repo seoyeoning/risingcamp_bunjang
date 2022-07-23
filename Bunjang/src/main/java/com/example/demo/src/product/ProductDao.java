@@ -223,7 +223,8 @@ public class ProductDao {
 
 
     public GetTradeInfoRes getTradeInfo(){
-        String getTradeInfoQuery="select productNmae"
+        String getTradeInfoQuery="select productNmae";
+        return null;
     }
 
 }
