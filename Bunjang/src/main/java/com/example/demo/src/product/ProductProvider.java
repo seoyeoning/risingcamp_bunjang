@@ -28,7 +28,7 @@ public class ProductProvider {
         this.jwtService = jwtService;
     }
 
-<<<<<<< HEAD
+
     // 상품 상세 페이지 조회
     public GetProductDetailRes getProductDetail(int productIdx) throws BaseException {
         try {
@@ -48,9 +48,7 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-=======
 
->>>>>>> main
 
     // 상품 등록 태그 조회
     public List<GetTagsRes> getTags(String tagWord) throws BaseException{

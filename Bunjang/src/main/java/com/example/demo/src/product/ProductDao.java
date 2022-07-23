@@ -19,7 +19,7 @@ public class ProductDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-<<<<<<< HEAD
+
     // 상품 상세 페이지 조회
     public GetProductDetailRes getProductDetail(int productIdx) {
         String getProductDetailQuery = "select Products.id, format(price, '###,###') as price, safePay, productName, location,\n" +
@@ -128,9 +128,7 @@ public class ProductDao {
                         rs.getInt("bookmarkCnt"))
         );
     }
-=======
 
->>>>>>> main
 
     // 상품 등록 태그 조회
     public List<GetTagsRes> getTags(String tagWord) {
