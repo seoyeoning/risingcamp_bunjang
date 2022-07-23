@@ -21,38 +21,82 @@ public class ProductDao {
 
     // 상품 상세 페이지 조회
     public GetProductDetailRes getProductDetail(int productIdx) {
-        String getProductDetailQuery = "select format(price, '###,###') as price, productName, location, productStatus, count, trade, description,\n" +
-                "       ThirdCategory.categoryName as categoryName, safePay\n" +
+        String getProductDetailQuery = "select Products.id, format(price, '###,###') as price, safePay, productName, location,\n" +
+                "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
+                "then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
+                "    when TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()) < 24\n" +
+                "    then concat(TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()), '시간 전')\n" +
+                "    WHEN TIMESTAMPDIFF(DAY ,Products.createAt, NOW()) < 30\n" +
+                "    then concat(TIMESTAMPDIFF(DAY ,Products.createAt, NOW()), '일 전')\n" +
+                "end) as timeDiff, productStatus, count, deliveryTip, trade, description,\n" +
+                "                  (select case when Products.thirdCategoryName is null and Products.secondCategoryName is null\n" +
+                "then Products.firstCategoryName\n" +
+                "when Products.thirdCategoryName is null and Products.secondCategoryName is not null\n" +
+                "then Products.secondCategoryName\n" +
+                "    when Products.thirdCategoryName is not null\n" +
+                "    then Products.thirdCategoryName\n" +
+                "                   end) as category, count( BookMarks.productId) as bookmarkCnt\n" +
                 "from Products\n" +
-                "inner join FirstCategory on Products.firstCategoryId = FirstCategory.firstCategoryId\n" +
-                "inner join SecondCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
-                "inner join ThirdCategory on SecondCategory.secondCategoryId = ThirdCategory.secondCategoryId\n" +
-                "where productId = ?\n" +
-                "and Products.thirdCategoryId = ThirdCategory.thirdCategoryId";
+                "left join BookMarks on BookMarks.productId = Products.id\n" +
+                "group by Products.id\n" +
+                "having Products.id = ?";
         int getProductDetailParams = productIdx;
 
-        String getProductImgQuery = "select productImgUrl\n" +
+        String getProductImgQuery = "select url1, url2, url3,url4,url5,url6,url7,url8,url9,url10,url11,url12\n" +
                 "from ProductImgUrls\n" +
-                "inner join Products on Products.productId = ProductImgUrls.productId\n" +
-                "where Products.productId = ?;";
+                "inner join Products on Products.id = ProductImgUrls.productId\n" +
+                "where Products.id = ?";
         int getProductImgParams = productIdx;
-        List<GetProductImgRes> getProductImgRes = this.jdbcTemplate.query(getProductImgQuery,
+        GetProductImgRes getProductImgRes = this.jdbcTemplate.queryForObject(getProductImgQuery,
                 (rs, rowNum) -> new GetProductImgRes(
-                        rs.getString("productImgUrl")),
-                getProductDetailParams);
+                        rs.getString("url1"),
+                        rs.getString("url2"),
+                        rs.getString("url3"),
+                        rs.getString("url4"),
+                        rs.getString("url5"),
+                        rs.getString("url6"),
+                        rs.getString("url7"),
+                        rs.getString("url8"),
+                        rs.getString("url9"),
+                        rs.getString("url10"),
+                        rs.getString("url11"),
+                        rs.getString("url12")
+                ),
+                getProductImgParams);
+
+        String getProductTagQuery = "select tag1, tag2, tag3, tag4, tag5\n" +
+                "from Products\n" +
+                "inner join ProductTags on ProductTags.productId = Products.id\n" +
+                "where Products.id = ?";
+        int getProductTagParams = productIdx;
+        GetProductTagRes getProductTagRes = this.jdbcTemplate.queryForObject(getProductTagQuery,
+                (rs, rowNum) -> new GetProductTagRes(
+                        rs.getString("tag1"),
+                        rs.getString("tag2"),
+                        rs.getString("tag3"),
+                        rs.getString("tag4"),
+                        rs.getString("tag5")
+                ),
+                getProductTagParams);
 
         return this.jdbcTemplate.queryForObject(getProductDetailQuery,
                 (rs, rowNum) -> new GetProductDetailRes(
                         getProductImgRes,
+                        rs.getInt("id"),
                         rs.getString("price"),
+                        rs.getString("safePay"),
                         rs.getString("productName"),
                         rs.getString("location"),
+                        rs.getString("timeDiff"),
                         rs.getString("productStatus"),
                         rs.getInt("count"),
+                        rs.getString("deliveryTip"),
                         rs.getString("trade"),
                         rs.getString("description"),
-                        rs.getString("categoryName"),
-                        rs.getString("safePay")),
+                        rs.getString("category"),
+                        rs.getInt("bookmarkCnt"),
+                        getProductTagRes
+                        ),
                 getProductDetailParams);
     }
 
@@ -108,12 +152,12 @@ public class ProductDao {
                 );
     }
     // 상품 등록 두번째 카테고리 조회
-    public List<GetSecondCategoryRes> getSecondCategory(String firstCategoryName) {
+    public List<GetSecondCategoryRes> getSecondCategory(GetSecondCategoryReq getSecondCategoryReq) {
         String getSecondCategoryQuery = "select SecondCategory.categoryName\n" +
                 "from SecondCategory\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
                 "where FirstCategory.categoryName = ?";
-        String getSecondCategoryParams = firstCategoryName;
+        String getSecondCategoryParams = getSecondCategoryReq.getFirstCategoryName();
 
         return this.jdbcTemplate.query(getSecondCategoryQuery,
                 (rs, rowNum) -> new GetSecondCategoryRes(
@@ -121,13 +165,13 @@ public class ProductDao {
                 getSecondCategoryParams);
     }
     // 상품 등록 세번째 카테고리 조회
-    public List<GetThirdCategoryRes> getThirdCategory(String firstCategoryName, String secondCategoryName) {
+    public List<GetThirdCategoryRes> getThirdCategory(GetThirdCategoryReq getThirdCategoryReq) {
         String getThirdCategoryQuery = "select ThirdCategory.categoryName\n" +
                 "from ThirdCategory\n" +
                 "inner join SecondCategory on SecondCategory.secondCategoryId = ThirdCategory.secondCategoryId\n" +
                 "inner join FirstCategory on FirstCategory.firstCategoryId = SecondCategory.firstCategoryId\n" +
                 "where FirstCategory.categoryName = ? and SecondCategory.categoryName = ?";
-        Object[] getThirdCategoryParams = new Object[]{firstCategoryName,secondCategoryName};
+        Object[] getThirdCategoryParams = new Object[]{getThirdCategoryReq.getFirstCategoryName(),getThirdCategoryReq.getSecondCategoryName()};
 
         return this.jdbcTemplate.query(getThirdCategoryQuery,
                 (rs, rowNum) -> new GetThirdCategoryRes(

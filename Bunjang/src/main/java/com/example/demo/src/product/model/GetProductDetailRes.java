@@ -12,15 +12,20 @@ import java.util.List;
 
 public class GetProductDetailRes {
 
-    private List<GetProductImgRes> getProductImgRes;
+    private GetProductImgRes getProductImgRes;
+    private int productId;
     private String price;
+    private String safePay;
     private String productName;
     private String location;
+    private String timeDiff;
     private String productStatus;
     private int count;
+    private String deliveryTip;
     private String trade;
     private String description;
     private String categoryName;
-    private String safePay;
+    private int bookmarkCnt;
+    private GetProductTagRes getProductTagRes;
 
 }
