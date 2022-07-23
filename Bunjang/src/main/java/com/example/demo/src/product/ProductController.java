@@ -102,7 +102,7 @@ public class ProductController {
      * [POST] /:userIdx/new-product/categories/:firstIdx
      */
     @ResponseBody
-    @PostMapping("/{userIdx}/new-product/categories/{firstIdx}")
+    @GetMapping("/{userIdx}/new-product/categories/{firstIdx}")
     public BaseResponse<List<GetSecondCategoryRes>> getSecondCategory(@PathVariable("userIdx") int userIdx,@PathVariable("firstIdx") int firstIdx) {
         try {
             List<GetSecondCategoryRes> getSecondCategoryRes = productProvider.getSecondCategory(firstIdx);
@@ -118,7 +118,7 @@ public class ProductController {
      * [POST] /:userIdx/new-product/categories/:firstIdx/:secondIdx
      */
     @ResponseBody
-    @PostMapping("/{userIdx}/new-product/categories/{firstIdx}/{secondIdx}")
+    @GetMapping("/{userIdx}/new-product/categories/{firstIdx}/{secondIdx}")
     public BaseResponse<List<GetThirdCategoryRes>> getThirdCategory(@PathVariable("userIdx") int userIdx,@PathVariable("firstIdx") int firstIdx,@PathVariable("secondIdx") int secondIdx ) {
         try {
             List<GetThirdCategoryRes> getThirdCategoryRes = productProvider.getThirdCategory(firstIdx,secondIdx);
