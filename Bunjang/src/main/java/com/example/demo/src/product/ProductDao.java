@@ -222,4 +222,8 @@ public class ProductDao {
     }
 
 
+    public GetTradeInfoRes getTradeInfo(){
+        String getTradeInfoQuery="select productNmae"
+    }
+
 }
