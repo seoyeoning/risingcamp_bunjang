@@ -34,40 +34,9 @@ public class ProductController {
         this.jwtService = jwtService;
     }
 
-    /**
-     * 상품 상세 페이지 조회 API
-     * [GET] /:productIdx
-     */
-    @ResponseBody
-    @GetMapping("/{productIdx}")
-    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
 
-        try {
-            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
 
-            return new BaseResponse<>(getProductDetailRes);
 
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
-    /**
-     * 메인화면 추천 상품 조회 API
-     * [GET]
-     */
-    @ResponseBody
-    @GetMapping("")
-    public BaseResponse<List<GetMainProductsRes>> getMainProducts() {
-        try {
-            List<GetMainProductsRes> getMainProductsRes = productProvider.getMainProducts();
-
-            return new BaseResponse<>(getMainProductsRes);
-
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
 
 
 
