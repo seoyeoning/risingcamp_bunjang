@@ -7,6 +7,7 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.bookmark.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -49,4 +50,25 @@ public class BookmarkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 찜한 상품 조회
+     * [GET] /:userIdx
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GetUserBookmarksRes>> getUserBookmarks(@PathVariable("userIdx") int userIdx) {
+        try {
+
+            List<GetUserBookmarksRes> getUserBookmarksRes = bookmarkProvider.getUserBookmarks(userIdx);
+
+            return new BaseResponse<>(getUserBookmarksRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+
 }

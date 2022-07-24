@@ -1,6 +1,6 @@
 package com.example.demo.src.bookmark;
 
-import com.example.demo.src.user.model.*;
+import com.example.demo.src.bookmark.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,6 +42,36 @@ public class BookmarkDao {
         return this.jdbcTemplate.update(patchBookmarkQuery,patchBookmarkParams);
     }
 
+    // 찜 조회
+    public List<GetUserBookmarksRes> getUserBookmarks(int userIdx) {
+        String getUserBookmarksQuery = "select BookMarks.productId, safePay , url1, productName, format(price, '###,###') as price, storeProfileImgUrl, storeName,\n" +
+                "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
+                "then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
+                "    when TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()) < 24\n" +
+                "    then concat(TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()), '시간 전')\n" +
+                "    WHEN TIMESTAMPDIFF(DAY ,Products.createAt, NOW()) < 30\n" +
+                "    then concat(TIMESTAMPDIFF(DAY ,Products.createAt, NOW()), '일 전')\n" +
+                "end) as timeDiff\n" +
+                "from Products\n" +
+                "inner join BookMarks on BookMarks.productId = Products.id\n" +
+                "inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
+                "inner join Users on Users.userId = Products.userId\n" +
+                "inner join Stores on Stores.userId = Users.userId\n" +
+                "where BookMarks.userId = ?";
+        int getUserBookmarksParams = userIdx;
+
+        return this.jdbcTemplate.query(getUserBookmarksQuery,
+                (rs, rowNum) -> new GetUserBookmarksRes(
+                        rs.getInt("productId"),
+                        rs.getString("safePay"),
+                        rs.getString("url1"),
+                        rs.getString("productName"),
+                        rs.getString("price"),
+                        rs.getString("storeProfileImgUrl"),
+                        rs.getString("storeName"),
+                        rs.getString("timeDiff")),
+                getUserBookmarksParams);
+    }
 
 
 }
