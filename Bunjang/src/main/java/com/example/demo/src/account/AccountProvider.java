@@ -37,4 +37,15 @@ public class AccountProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    // 유저의 계좌 목록 조회
+    public List<GerUserAccountRes> getUserAccount(int userIdx) throws BaseException {
+        try {
+            List<GerUserAccountRes> gerUserAccountRes = accountDao.getUserAccount(userIdx);
+            return  gerUserAccountRes;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

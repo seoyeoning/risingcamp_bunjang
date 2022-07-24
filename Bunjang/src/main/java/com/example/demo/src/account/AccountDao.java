@@ -1,7 +1,6 @@
 package com.example.demo.src.account;
 
-import com.example.demo.src.account.model.PostUserAccountReq;
-import com.example.demo.src.product.model.*;
+import com.example.demo.src.account.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -112,5 +111,26 @@ public class AccountDao {
         int modifyForDParams = userFirstAccountId;
         return this.jdbcTemplate.update(modifyForDQuery,modifyForDParams);
     }
+
+    // 계좌 조회
+   public List<GerUserAccountRes> getUserAccount(int userIdx) {
+        String getUserAccountQuery = "select case when Account.status = 'A' then '기본계좌'\n" +
+                "    when Account.status = 'D' then '일반계좌'\n" +
+                "end as bankStatus, bankName, accountNum, accountHolder\n" +
+                "from Account\n" +
+                "inner join Bank on Bank.id = Account.bankId\n" +
+                "where usrId = ?\n" +
+                "order by Account.status";
+
+        int getUserAccountParams = userIdx;
+
+        return this.jdbcTemplate.query(getUserAccountQuery,
+                (rs, rowNum) -> new GerUserAccountRes(
+                        rs.getString("bankStatus"),
+                        rs.getString("bankName"),
+                        rs.getString("accountNum"),
+                        rs.getString("accountHolder")),
+                getUserAccountParams);
+   }
 
 }
