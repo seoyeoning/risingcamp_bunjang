@@ -50,6 +50,24 @@ public class AccountService {
         }
     }
 
+    // 계좌 삭제
+    public void deleteUserAccount(int userIdx, int accountIdx) throws BaseException {
+        if ( accountProvider.checkAccountCnt(userIdx) == 0 ) {
+            throw new BaseException(INVALID_ACCOUNT);
+        }
+        try {
+            if (accountProvider.checkAccountCnt(userIdx) == 1) {
+                // 계좌가 1개만 있을때 그냥 삭제
+                accountDao.deleteUserAccountFor1(accountIdx);
+            } else {
+                // 1개 삭제하고 나머지 한개 A로 바꾸기
+                accountDao.deleteUserAccountFor2(userIdx,accountIdx);
+            }
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
 
 

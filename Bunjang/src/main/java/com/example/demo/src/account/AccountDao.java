@@ -81,4 +81,36 @@ public class AccountDao {
         return this.jdbcTemplate.update(createUserAccountForDQuery,createUserAccountForDParams);
     }
 
+    // 계좌 1개만 있을때 삭제
+    public int deleteUserAccountFor1(int accountIdx) {
+        String deleteUserAccountFor1Query = "DELETE FROM bunjang.Account WHERE id = ?";
+        int deleteUserAccountFor1Params = accountIdx;
+
+        return this.jdbcTemplate.update(deleteUserAccountFor1Query,deleteUserAccountFor1Params);
+    }
+
+    // 계좌 2개 있을때 한개 삭제하고 나머지 1개 A로 바꾸기
+    public int deleteUserAccountFor2(int userIdx, int accountIdx) {
+
+        String deleteUserAccountFor2Query = "DELETE FROM bunjang.Account WHERE id = ?";
+        int deleteUserAccountFor2Params = accountIdx;
+
+        this.jdbcTemplate.update(deleteUserAccountFor2Query,deleteUserAccountFor2Params);
+
+        // 유저의 나머지 계좌 id 추출
+        String userFirstAccountIdQuery = "select Account.id as accountId\n" +
+                "from Account\n" +
+                "where Account.usrId = ?";
+        int userFirstAccountIdParams = userIdx;
+
+        int userFirstAccountId = this.jdbcTemplate.queryForObject(userFirstAccountIdQuery,
+                int.class,
+                userFirstAccountIdParams);
+
+        //첫번째 계좌 A로 바꾸기
+        String modifyForDQuery = "UPDATE bunjang.Account t SET t.status = 'A' WHERE t.id = ?";
+        int modifyForDParams = userFirstAccountId;
+        return this.jdbcTemplate.update(modifyForDQuery,modifyForDParams);
+    }
+
 }

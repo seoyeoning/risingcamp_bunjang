@@ -46,7 +46,8 @@ public enum BaseResponseStatus {
 
     // [POST] /accounts
     EXCESS_ACCOUNT(false,3015,"계좌는 최대 2개까지 등록 가능합니다."),
-
+    //[DELETE] /accounts
+    INVALID_ACCOUNT(false,3016,"존재하지 않는 계좌입니다."),
 
 
     /**
