@@ -36,5 +36,17 @@ public class BookmarkProvider {
         }
     }
 
+    // 찜 조회
+    public List<GetUserBookmarksRes> getUserBookmarks(int userIdx) throws BaseException {
+        try {
+
+            List<GetUserBookmarksRes> getUserBookmarksRes = bookmarkDao.getUserBookmarks(userIdx);
+
+            return getUserBookmarksRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }
