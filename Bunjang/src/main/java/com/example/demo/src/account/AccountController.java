@@ -68,4 +68,21 @@ public class AccountController {
         }
     }
 
+    /**
+     * 계좌 조회 API
+     * [GET] /:userIdx
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GerUserAccountRes>> getUserAccount(@PathVariable("userIdx") int userIdx) {
+        try {
+            List<GerUserAccountRes> gerUserAccountRes = accountProvider.getUserAccount(userIdx);
+
+            return new BaseResponse<>(gerUserAccountRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
