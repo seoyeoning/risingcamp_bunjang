@@ -11,5 +11,6 @@ public class GetSecondCategoryRes {
 
     private String secondCategoryName;
     private int secondCategoryId;
+    private int thirdCategoryExist;
 
 }
