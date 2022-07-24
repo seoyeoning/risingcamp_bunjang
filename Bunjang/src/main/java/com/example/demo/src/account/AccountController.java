@@ -51,4 +51,21 @@ public class AccountController {
         }
     }
 
+    /**
+     * 계좌 삭제 API
+     * [DELETE] /:userIdx/:accountIdx
+     */
+    @ResponseBody
+    @DeleteMapping("/{userIdx}/{accountIdx}")
+    public BaseResponse<String> deleteUserAccount(@PathVariable("userIdx") int userIdx, @PathVariable("accountIdx") int accountIdx) {
+        try {
+            accountService.deleteUserAccount(userIdx,accountIdx);
+
+            String result = "유저" + userIdx + "의 계좌가 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
