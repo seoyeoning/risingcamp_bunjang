@@ -21,7 +21,7 @@ public class OrderDao {
 
     //전체 구매내역 조회
     public List<GetOrderRes> getOrders(int userId){
-        String getOrdersQuery="select url1, productName, Orders.status, storeName,price, date_format(Orders.updateAt,'%Y.%m.%d (%r)')\n" +
+        String getOrdersQuery="select url1, productName, Orders.status, storeName,price, Orders.updateAt\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Stores S on Products.userId = S.userId\n" +
                 "join Orders on Orders.productId=Products.id\n" +
@@ -32,7 +32,7 @@ public class OrderDao {
                         rs.getString("productName"),
                         rs.getString("status"),
                         rs.getString("storeName"),
-                        rs.getString("price"),
+                        rs.getInt("price"),
                         rs.getString("date")
                 ),
                 userId);
@@ -44,14 +44,14 @@ public class OrderDao {
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Stores S on Products.userId = S.userId\n" +
                 "join Orders on Orders.productId=Products.id\n" +
-                "where Orders.userId=? and Orders.status=? and Orders.status=? ";
+                "where Orders.userId=? and Orders.status=? or Orders.status=? ";
         return this.jdbcTemplate.query(getOrdersCancelQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getString("url1"),
                         rs.getString("productName"),
                         rs.getString("status"),
                         rs.getString("storeName"),
-                        rs.getString("price"),
+                        rs.getInt("price"),
                         rs.getString("date")
                 ),
                 userId,"환불완료","결제취소");
@@ -70,7 +70,7 @@ public class OrderDao {
                         rs.getString("productName"),
                         rs.getString("status"),
                         rs.getString("storeName"),
-                        rs.getString("price"),
+                        rs.getInt("price"),
                         rs.getString("date")
                 ),
                 userId,"진행중");
@@ -89,7 +89,7 @@ public class OrderDao {
                         rs.getString("productName"),
                         rs.getString("status"),
                         rs.getString("storeName"),
-                        rs.getString("price"),
+                        rs.getInt("price"),
                         rs.getString("date")
                 ),
                 userId, "결제완료");

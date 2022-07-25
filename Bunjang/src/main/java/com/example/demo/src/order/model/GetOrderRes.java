@@ -12,6 +12,6 @@ public class GetOrderRes {
     private String productName;
     private String status;
     private String storeName;
-    private String price;
+    private int price;
     private String date;
 }
