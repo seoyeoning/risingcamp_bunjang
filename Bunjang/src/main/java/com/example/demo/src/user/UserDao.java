@@ -230,6 +230,16 @@ public class UserDao {
 
     }
 
+    // 상점 차단
+    public int createBlockStore(int userIdx, int storeIdx) {
+
+            String createBlockStoreQuery = "INSERT INTO bunjang.BlockStores (userId, storeId) VALUES (? , ? )";
+
+            Object[] createBlockStoreParams = new Object[]{userIdx,storeIdx};
+
+            return this.jdbcTemplate.update(createBlockStoreQuery,createBlockStoreParams);
+    }
+
 
 
 
