@@ -203,5 +203,30 @@ public class UserDao {
                phone);
     }
 
+    // 회원 상점 정보 수정
+    public int modifyUserStoreInfo(int userIdx, PatchUserStoreInfoReq patchUserStoreInfoReq) {
+
+            //유저 id의 상점 id 추출
+        String getUserStoreIdQuery = "select storeId\n" +
+                "from Stores\n" +
+                "inner join Users on Stores.userId = Users.userId\n" +
+                "where Users.userId = ?";
+        int getUserStoreIdParams = userIdx;
+        int storeIdx = this.jdbcTemplate.queryForObject(getUserStoreIdQuery,
+                int.class,
+                getUserStoreIdParams);
+
+        String modifyUserStoreInfoQuery = "UPDATE bunjang.Stores t SET t.storeProfileImgUrl = ?, t.contactTimeStart = ?, t.contactTimeFinish = ?,\n" +
+                "                            t.storeAdress = ?, t.storeName = ?, t.storeIntoro = ?,\n" +
+                "                            t.notice = ?, t.info = ? WHERE t.storeId = ?";
+        Object[] modifyUserStoreInfoParams = new Object[]{patchUserStoreInfoReq.getStoreProfileImgUrl(),patchUserStoreInfoReq.getContactTimeStart(),
+        patchUserStoreInfoReq.getContactTimeFinish(),patchUserStoreInfoReq.getStoreAddress(),patchUserStoreInfoReq.getStoreName(),patchUserStoreInfoReq.getStoreInfo(),
+        patchUserStoreInfoReq.getNotice(),patchUserStoreInfoReq.getInfo(), storeIdx};
+
+        return this.jdbcTemplate.update(modifyUserStoreInfoQuery,modifyUserStoreInfoParams);
+    }
+
+
+
 
 }
