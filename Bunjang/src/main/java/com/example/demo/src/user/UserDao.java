@@ -240,6 +240,34 @@ public class UserDao {
             return this.jdbcTemplate.update(createBlockStoreQuery,createBlockStoreParams);
     }
 
+    // 차단 상점 조회
+    public List<GetUserBlockStoresRes> getUserBlockStores(int userIdx) {
+
+            String getUserBlockStoresQuery = "select BlockStores.storeId, storeProfileImgUrl ,Stores.storeName,\n" +
+                    "       (select case when TIMESTAMPDIFF(HOUR,BlockStores.createAt, NOW()) < 24 and TIMESTAMPDIFF(HOUR,BlockStores.createAt, NOW()) >= 0 and date_format(BlockStores.createAt, '%p') = 'PM'\n" +
+                    "        then replace(date_format(BlockStores.createAt, '%p %h:%i'),'PM','오후')\n" +
+                    "        when TIMESTAMPDIFF(HOUR,BlockStores.createAt, NOW()) < 24 and TIMESTAMPDIFF(HOUR,BlockStores.createAt, NOW()) > 0 and date_format(BlockStores.createAt, '%p') = 'AM'\n" +
+                    "        then replace(date_format(BlockStores.createAt, '%p %h:%i'),'AM','오전')\n" +
+                    "        when date_format(BlockStores.createAt, '%p') = 'PM'\n" +
+                    "        then replace(date_format(BlockStores.createAt, '%y년 %m월 %d일 %p %h:%i'),'PM','오후')\n" +
+                    "        when date_format(BlockStores.createAt, '%p') = 'AM'\n" +
+                    "        then replace(date_format(BlockStores.createAt, '%y년 %m월 %d일 %p %h:%i'),'AM','오전')\n" +
+                    "        end) as blockTime\n" +
+                    "from BlockStores\n" +
+                    "inner join Stores on Stores.storeId = BlockStores.storeId\n" +
+                    "where BlockStores.userId = ?";
+            int getUserBlockStoresParams = userIdx;
+
+            return this.jdbcTemplate.query(getUserBlockStoresQuery,
+                    (rs, rowNum) -> new GetUserBlockStoresRes(
+                            rs.getInt("storeId"),
+                            rs.getString("storeProfileImgUrl"),
+                            rs.getString("storeName"),
+                            rs.getString("blockTime")),
+                    getUserBlockStoresParams);
+
+    }
+
 
 
 
