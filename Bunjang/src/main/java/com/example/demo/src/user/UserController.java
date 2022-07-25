@@ -193,4 +193,21 @@ public class UserController {
         }
     }
 
+    /**
+     * 차단 상점 조회
+     * [GET] /:userIdx/blockStores
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/blockStores")
+    public BaseResponse<List<GetUserBlockStoresRes>> getUserBlockStores(@PathVariable("userIdx") int userIdx) {
+        try {
+            List<GetUserBlockStoresRes> getUserBlockStoresRes = userProvider.getUserBlockStores(userIdx);
+
+            return new BaseResponse<>(getUserBlockStoresRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 }

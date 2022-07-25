@@ -119,5 +119,16 @@ public class UserProvider {
         }
     }
 
+    // 차단 상점 조회
+    public List<GetUserBlockStoresRes> getUserBlockStores(int userIdx) throws BaseException {
+        try {
+            List<GetUserBlockStoresRes > getUserBlockStoresRes = userDao.getUserBlockStores(userIdx);
+            return getUserBlockStoresRes;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }
