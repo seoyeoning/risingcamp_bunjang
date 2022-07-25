@@ -173,5 +173,24 @@ public class UserController {
         }
     }
 
+    /**
+     * 상점 차단 하기
+     * [POST] /:userIdx/:storeIdx/new-block
+     */
+    @ResponseBody
+    @PostMapping("/{userIdx}/{storeIdx}/new-block")
+    public BaseResponse<String> createBlockStore(@PathVariable("userIdx") int userIdx,@PathVariable("storeIdx") int storeIdx) {
+        try {
+
+            userService.createBlockStore(userIdx,storeIdx);
+
+            String result = "가게" + storeIdx + "을(를) 차단했습니다.";
+
+            return new BaseResponse<>(result);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 }

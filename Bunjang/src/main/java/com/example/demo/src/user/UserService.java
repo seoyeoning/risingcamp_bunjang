@@ -132,4 +132,14 @@ public class UserService {
         }
     }
 
+    // 상점 차단
+    public void createBlockStore(int userIdx, int storeIdx) throws BaseException {
+        try {
+            userDao.createBlockStore(userIdx, storeIdx);
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
