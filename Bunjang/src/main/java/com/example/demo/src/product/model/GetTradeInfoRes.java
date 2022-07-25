@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 public class GetTradeInfoRes {
     private String productName;
@@ -19,4 +18,8 @@ public class GetTradeInfoRes {
     private String payMethod;
     private int fee;
     private String deliveryTip;
+
+    private String userName;
+    private String phone;
+    private String address;
 }

@@ -144,7 +144,7 @@ public class ProductController {
             productService.postProduct(userIdx, postProduct);
 
             String result = "상품 등록이 완료되었습니다.";
-            return new BaseResponse<>(result);
+                return new BaseResponse<>(result);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

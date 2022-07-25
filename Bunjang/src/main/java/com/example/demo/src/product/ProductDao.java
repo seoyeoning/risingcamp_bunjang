@@ -222,9 +222,30 @@ public class ProductDao {
     }
 
 
-    public GetTradeInfoRes getTradeInfo(){
-        String getTradeInfoQuery="select productNmae";
-        return null;
-    }
+//    public GetTradeInfoRes getTradeInfo(){
+//        String getTradeInfoQuery="select productName, url1, price,storeName from Products\n" +
+//                "join ProductImgUrls on Products.id=ProductImgUrls.id\n" +
+//                "join Stores S on Products.userId = S.userId\n" +
+//                "where Products.id=?";
+//        return this.jdbcTemplate.queryForObject(getTradeInfoQuery,
+//                (rs, rowNum) -> new GetTradeInfoRes(
+//                        rs.getString("productName"),
+//                        rs.getString("url1"),
+//                        rs.getInt("price"),
+//                        rs.getString("storeName"),
+//                        rs.getString("tradeMethod"),
+//                        rs.getString("orderNumber"),
+//                        rs.getString("orderDay"),
+//                        rs.getString("payMethod"),
+//                        rs.getInt("fee"),
+//                        rs.getString("deliveryTip"),
+//                        //
+//                        rs.getString("userName"),
+//                        rs.getString("phone"),
+//                        rs.getString("address")
+//                ),
+//        );
+//    }
 
+    
 }
