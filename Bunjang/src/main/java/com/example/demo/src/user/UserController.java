@@ -136,5 +136,24 @@ public class UserController {
         }
     }
 
+    /**
+     * 상점 정보 수정
+     * [PATCH] /:userIdx/storeInfo
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/storeInfo")
+    public BaseResponse<String> modifyStoreInfo(@PathVariable("userIdx") int userIdx,@RequestBody PatchUserStoreInfoReq patchUserStoreInfoReq) {
+        try {
+            userService.modifyUserStoreInfo(userIdx, patchUserStoreInfoReq);
+
+            String result = "상점 정보가 변경되었습니다.";
+
+            return new BaseResponse<>(result);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 
 }
