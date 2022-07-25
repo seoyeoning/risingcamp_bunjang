@@ -81,13 +81,6 @@ public class UserDao {
                 checkEmailParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
     }
 
-    // 회원정보 변경
-    public int modifyUserName(PatchUserReq patchUserReq) {
-        String modifyUserNameQuery = "update User set nickname = ? where userIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getUserIdx()}; // 주입될 값들(nickname, userIdx) 순
-
-        return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0) 
-    }
 
 
     // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
@@ -224,6 +217,17 @@ public class UserDao {
         patchUserStoreInfoReq.getNotice(),patchUserStoreInfoReq.getInfo(), storeIdx};
 
         return this.jdbcTemplate.update(modifyUserStoreInfoQuery,modifyUserStoreInfoParams);
+    }
+
+    // 회원정보 변경
+    public int modifyUserInfo(int userIdx, PatchUserInfoReq patchUserInfoReq) {
+
+            String modifyUserInfoQuery = "UPDATE bunjang.Users t SET t.gender = ?, t.phone = ?, t.birthForSettings = ? WHERE t.userId = ?";
+
+            Object[] modifyUserInfoParams = new Object[]{patchUserInfoReq.getGender(), patchUserInfoReq.getPhone(), patchUserInfoReq.getBirthForSettings(),userIdx};
+
+            return this.jdbcTemplate.update(modifyUserInfoQuery,modifyUserInfoParams);
+
     }
 
 

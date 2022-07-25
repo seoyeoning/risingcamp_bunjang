@@ -155,5 +155,23 @@ public class UserController {
         }
     }
 
+    /**
+     * 유저 정보 수정(계정 설정)
+     * [PATCH] /:userIdx/userInfo
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/userInfo")
+    public BaseResponse<String> modifyUserInfo(@PathVariable("userIdx") int userIdx,@RequestBody PatchUserInfoReq patchUserInfoReq) {
+        try {
+            userService.modifyUserInfo(userIdx, patchUserInfoReq);
+
+            String result = "유저 정보가 변경되었습니다.";
+
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 
 }
