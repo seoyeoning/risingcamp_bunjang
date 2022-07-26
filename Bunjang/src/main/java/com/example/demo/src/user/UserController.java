@@ -210,4 +210,20 @@ public class UserController {
         }
     }
 
+    /**
+     * 최근 본 상품 조회
+     * [GET] /:userIdx/history
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/history")
+    public BaseResponse<List<GetUserHistoryProductRes>> getUserHistoryProduct(@PathVariable("userIdx") int userIdx) {
+        try {
+            List<GetUserHistoryProductRes> getUserHistoryProductRes = userProvider.getUserHistoryProduct(userIdx);
+
+            return new BaseResponse<>(getUserHistoryProductRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 }

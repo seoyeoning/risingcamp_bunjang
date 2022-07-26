@@ -34,16 +34,28 @@ public class ProductController {
         this.jwtService = jwtService;
     }
 
-
-    /** 상품 상세 페이지 조회 API
-     * [GET] /:productIdx
+    /**
+     * 유저 jwt 조회
+     * [GET] /:userIdx/jwt
      */
     @ResponseBody
-    @GetMapping("/{productIdx}")
-    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
+    @GetMapping("/{userIdx}/jwt")
+    public BaseResponse<String> getUserJwt(@PathVariable("userIdx") int userIdx) {
+        String useJwt = productService.getUserJwt(userIdx);
+        return new BaseResponse<>(useJwt);
+    }
+
+
+    /** 상품 상세 페이지 조회 API
+     * [GET] /:productIdx/:userIdx
+     */
+    @ResponseBody
+    @GetMapping("/{productIdx}/{userIdx}")
+    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
 
         try {
-            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
+
+            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
 
             return new BaseResponse<>(getProductDetailRes);
 

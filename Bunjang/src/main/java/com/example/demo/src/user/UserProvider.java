@@ -130,5 +130,16 @@ public class UserProvider {
         }
     }
 
+    // 최근 본 상품 조회
+    public List<GetUserHistoryProductRes> getUserHistoryProduct(int userIdx) throws BaseException {
+        try {
+            List<GetUserHistoryProductRes> getUserHistoryProductRes = userDao.getUserHistoryProduct(userIdx);
+            return getUserHistoryProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
+
 
 }
