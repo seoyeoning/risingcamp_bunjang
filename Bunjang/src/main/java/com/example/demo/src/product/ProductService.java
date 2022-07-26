@@ -34,4 +34,10 @@ public class ProductService {
         }
     }
 
+    // 유저 jwt 추출
+    public String getUserJwt(int userIdx) {
+        String jwt = jwtService.createJwt(userIdx);
+        return jwt;
+    }
+
 }

@@ -268,6 +268,26 @@ public class UserDao {
 
     }
 
+    // 최근 본 상품 조회
+    public List<GetUserHistoryProductRes> getUserHistoryProduct(int userIdx) {
+            String getUserHistoryProductQuery = "select distinct Products.id ,url1, productName, format(price, '###,###') as price, safePay\n" +
+                    "from Products\n" +
+                    "left join UserViewProduct on UserViewProduct.productId = Products.id\n" +
+                    "inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
+                    "where UserViewProduct.userId = ?\n" +
+                    "order by UserViewProduct.createAt desc";
+            int getUserHistoryProductParams = userIdx;
+
+            return this.jdbcTemplate.query(getUserHistoryProductQuery,
+                    (rs, rowNrm) -> new GetUserHistoryProductRes(
+                            rs.getInt("id"),
+                            rs.getString("url1"),
+                            rs.getString("productName"),
+                            rs.getString("price"),
+                            rs.getString("safePay")),
+                    getUserHistoryProductParams);
+
+    }
 
 
 
