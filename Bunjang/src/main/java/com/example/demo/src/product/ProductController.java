@@ -52,7 +52,6 @@ public class ProductController {
     @ResponseBody
     @GetMapping("/{productIdx}/{userIdx}")
     public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
-
         try {
 
             GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);

@@ -73,5 +73,18 @@ public class BookmarkDao {
                 getUserBookmarksParams);
     }
 
+    // 유저가 상품을 찜했는지 여부
+    public int existBookmark(int userIdx, int productIdx) {
+
+        String existBookmarkQuery = "select exists(select *\n" +
+                "from BookMarks\n" +
+                "where userId = ? and productId = ?) as bookmarkExist";
+        Object[] existBookmarkParams = new Object[]{userIdx,productIdx};
+
+        return this.jdbcTemplate.queryForObject(existBookmarkQuery,
+                int.class,
+                existBookmarkParams);
+    }
+
 
 }
