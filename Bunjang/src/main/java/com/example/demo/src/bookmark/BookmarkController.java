@@ -38,7 +38,7 @@ public class BookmarkController {
 
     /**
      * 상품 찜/찜 취소
-     * [POST] /bunjang/bookmarks/:storeIdx/:productIdx
+     * [POST] /:userIdx/:productIdx
      */
     @ResponseBody
     @PostMapping("/{userIdx}/{productIdx}")
@@ -63,6 +63,23 @@ public class BookmarkController {
             List<GetUserBookmarksRes> getUserBookmarksRes = bookmarkProvider.getUserBookmarks(userIdx);
 
             return new BaseResponse<>(getUserBookmarksRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 유저가 상품을 찜한 상태인지 여부
+     * [GET] /:userIdx/:productIdx
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/{productIdx}")
+    public BaseResponse existBookmark(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
+        try {
+            int result = bookmarkProvider.existBookmark(userIdx,productIdx);
+
+            return new BaseResponse(result);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

@@ -48,5 +48,18 @@ public class BookmarkProvider {
         }
     }
 
+    // 유저가 상품을 찜했는지 여부
+    public int existBookmark(int userIdx, int productIdx) throws BaseException{
+        try {
+
+            int result = bookmarkDao.existBookmark(userIdx,productIdx);
+
+            return result;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }
