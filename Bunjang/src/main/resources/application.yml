@@ -1,6 +1,8 @@
 server:
   port: 9000  # 9000번 포트로 실행
-
+  servlet:
+    encoding:
+      charset: UTF-8
 spring:
   application:
     name: demo

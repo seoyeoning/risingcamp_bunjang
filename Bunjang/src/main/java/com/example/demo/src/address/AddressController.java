@@ -96,4 +96,14 @@ public class AddressController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @GetMapping("/search/address/number")
+    public BaseResponse searchLocation(){
+        try {
+            return new BaseResponse<>(addressProvider.searchLocation());
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

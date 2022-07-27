@@ -11,6 +11,6 @@ public class GetStoreKeywordRes {
     private String storeName;
     private String storeProfileImgUrl;
     private int storeId;
-//    private int follower;
-//    private int productCnt;
+    private int follower;
+    private int productCnt;
 }

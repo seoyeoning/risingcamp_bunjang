@@ -261,49 +261,24 @@ public class ProductDao {
 
     public List<GetStoreKeywordRes> getStoreKeywords(String keyword){
         String getStoreKeywordQuery="select storeName, storeProfileImgUrl, Stores.storeId from\n" +
-                "Stores where storeName like concat( ?,'%')";
-//        String getStoreIdQuery="select storeId from Stores where storeName like concat( ?,'%')";
-//       int cnt= this.jdbcTemplate.queryForObject(getStoreIdQuery,
-//                int.class,keyword);
-//       String getProductCntQuery="select count(Products.userID) from Products where userId=?";
-//        int productCnt= this.jdbcTemplate.queryForObject(getProductCntQuery,
-//                int.class,cnt);
+                "Stores where storeName like concat('%',?,'%')";
+        String getStoreIdQuery="select storeId from Stores where storeName like concat('%',?,'%')";
+        int userId=this.jdbcTemplate.queryForObject(getStoreIdQuery,int.class,keyword);
+        String getFollowerQuery="select count(Followers.userId) from Followers where userId=?";
+        String getProductCntQuery="select count(Products.userId) from Products where userId=?";
         return this.jdbcTemplate.query(getStoreKeywordQuery,
                 (rs, rowNum) -> new GetStoreKeywordRes(
                         rs.getString("storeName"),
                         rs.getString("storeProfileImgUrl"),
-                        rs.getInt("storeId")
-//                        rs.getInt("follower")
-//                          productCnt
+                        rs.getInt("storeId"),
+                        this.jdbcTemplate.queryForObject(getFollowerQuery,int.class,userId),
+                        this.jdbcTemplate.queryForObject(getProductCntQuery,int.class,userId)
                         ),keyword
         );
     }
 
 
-//    public GetTradeInfoRes getTradeInfo(){
-//        String getTradeInfoQuery="select productName, url1, price,storeName from Products\n" +
-//                "join ProductImgUrls on Products.id=ProductImgUrls.id\n" +
-//                "join Stores S on Products.userId = S.userId\n" +
-//                "where Products.id=?";
-//        return this.jdbcTemplate.queryForObject(getTradeInfoQuery,
-//                (rs, rowNum) -> new GetTradeInfoRes(
-//                        rs.getString("productName"),
-//                        rs.getString("url1"),
-//                        rs.getInt("price"),
-//                        rs.getString("storeName"),
-//                        rs.getString("tradeMethod"),
-//                        rs.getString("orderNumber"),
-//                        rs.getString("orderDay"),
-//                        rs.getString("payMethod"),
-//                        rs.getInt("fee"),
-//                        rs.getString("deliveryTip"),
-//                        //
-//                        rs.getString("userName"),
-//                        rs.getString("phone"),
-//                        rs.getString("address")
-//                ),
-//        );
-//    }
+
 
     
 }

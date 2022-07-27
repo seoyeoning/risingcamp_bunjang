@@ -1,8 +1,13 @@
 package com.example.demo.src.order;
 
+import com.example.demo.config.BaseException;
+import com.example.demo.src.order.model.PostOrderReq;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.DUPLICATED_ORDER;
 
 @Service
 public class OrderService {
@@ -19,4 +24,23 @@ public class OrderService {
     }
 
 
+    public void postParcelOrder(PostOrderReq postOrderReq)throws BaseException {
+        if (orderDao.checkOrder(postOrderReq.getProductId(), postOrderReq.getUserId()))
+            throw new BaseException(DUPLICATED_ORDER);
+        try {
+                orderDao.postParcelOrder(postOrderReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void postDirectOrder(PostOrderReq postOrderReq)throws BaseException {
+        if (orderDao.checkOrder(postOrderReq.getProductId(), postOrderReq.getUserId()))
+            throw new BaseException(DUPLICATED_ORDER);
+        try {
+            orderDao.postDirectOrder(postOrderReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
