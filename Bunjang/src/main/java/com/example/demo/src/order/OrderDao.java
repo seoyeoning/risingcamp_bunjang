@@ -21,11 +21,11 @@ public class OrderDao {
 
     //전체 구매내역 조회
     public List<GetOrderRes> getOrders(int userId) {
-        String getOrdersQuery = "select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)') AS orderDate\n" +
+        String getOrdersQuery = "select url1, productName, Orders.status, storeName,price,date_format(Orders.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
-                "join Sales on Sales.productId=Products.id\n" +
-                "join Stores S on Sales.storeId=S.storeId\n" +
-                "where Sales.userId=?";
+                "join Stores S on Products.userId = S.userId\n" +
+                "join Orders on Orders.productId=Products.id\n" +
+                "where Orders.userId=?";
         return this.jdbcTemplate.query(getOrdersQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getString("url1"),

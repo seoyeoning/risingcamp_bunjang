@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+
 @RestController
 @RequestMapping("/bunjang/sales")
 public class SaleController {
@@ -33,6 +35,12 @@ public class SaleController {
     @GetMapping("/{userId}")
     public BaseResponse<List<GetSaleRes>> getSales(@PathVariable("userId") int userId){
         try {
+                //jwt에서 idx 추출.
+                int userIdxByJwt = jwtService.getUserIdx();
+                //userIdx와 접근한 유저가 같은지 확인
+                if(userId != userIdxByJwt){
+                    return new BaseResponse<>(INVALID_USER_JWT);
+                }
             return new BaseResponse<>(saleProvider.getSales(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -41,9 +49,15 @@ public class SaleController {
 
     //취소/환불 구매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/cancel")
+    @GetMapping("cancels/{userId}")
     public BaseResponse<List<GetSaleRes>> getOrdersCancel(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(saleProvider.getSalesCancel(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -52,9 +66,15 @@ public class SaleController {
 
     //진행중 판매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/progress")
+    @GetMapping("progresses/{userId}")
     public BaseResponse<List<GetSaleRes>> getOrdersProgress(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(saleProvider.getSalesProgress(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -63,9 +83,15 @@ public class SaleController {
 
     //완료된 판매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/complete")
+    @GetMapping("/completes/{userId}")
     public BaseResponse<List<GetSaleRes>> getOrdersComplete(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(saleProvider.getSalesComplete(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

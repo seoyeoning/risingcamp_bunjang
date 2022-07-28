@@ -6,7 +6,9 @@ import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -23,12 +25,14 @@ public class OrderProvider {
         this.jwtService = jwtService;
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetOrderRes> getOrders(int userId)throws BaseException{
 
             return orderDao.getOrders(userId);
 
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetOrderRes> getOrdersCancel(int userId)throws BaseException {
         try {
             return orderDao.getOrdersCancel(userId);
@@ -37,6 +41,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetOrderRes> getOrdersProgress(int userId)throws BaseException {
         try {
             return orderDao.getOrdersProgress(userId);
@@ -45,6 +50,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetOrderRes> getOrdersComplete(int userId)throws BaseException {
         try {
             return orderDao.getOrdersComplete(userId);
@@ -53,6 +59,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetOrderParcelRes getOrderParcel(int productId, int userId)throws BaseException{
         try {
             return orderDao.getOrderParcel(productId,userId);
@@ -61,6 +68,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetDirectOrderRes getDirectOrder(int productId, int userId)throws BaseException{
         try {
             return orderDao.getDirectOrder(productId,userId);
@@ -69,6 +77,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetTradeInfoRes getTradeInfo(int productId, int userId)throws BaseException{
         if (orderDao.checkTradeMethod(productId, userId).equals("직거래"))
             throw new BaseException(INVALID_ORDER);
@@ -81,6 +90,7 @@ public class OrderProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetDirectTradeInfoRes getDirectTradeInfo(int productId, int userId)throws BaseException{
         if (orderDao.checkTradeMethod(productId, userId).equals("택배거래"))
             throw new BaseException(INVALID_ORDER);

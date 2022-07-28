@@ -5,6 +5,9 @@ import com.example.demo.src.order.model.PostOrderReq;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 import static com.example.demo.config.BaseResponseStatus.DUPLICATED_ORDER;
@@ -24,6 +27,7 @@ public class OrderService {
     }
 
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void postParcelOrder(PostOrderReq postOrderReq)throws BaseException {
         if (orderDao.checkOrder(postOrderReq.getProductId(), postOrderReq.getUserId()))
             throw new BaseException(DUPLICATED_ORDER);
@@ -34,6 +38,7 @@ public class OrderService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void postDirectOrder(PostOrderReq postOrderReq)throws BaseException {
         if (orderDao.checkOrder(postOrderReq.getProductId(), postOrderReq.getUserId()))
             throw new BaseException(DUPLICATED_ORDER);

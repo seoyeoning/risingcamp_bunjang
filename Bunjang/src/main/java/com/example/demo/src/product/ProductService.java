@@ -5,6 +5,9 @@ import com.example.demo.src.product.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -24,6 +27,7 @@ public class ProductService {
     }
 
     // 상품 등록
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void postProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
         try {
 
@@ -35,6 +39,7 @@ public class ProductService {
     }
 
     // 유저 jwt 추출
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public String getUserJwt(int userIdx) {
         String jwt = jwtService.createJwt(userIdx);
         return jwt;

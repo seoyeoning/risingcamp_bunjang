@@ -7,10 +7,12 @@ import com.example.demo.src.sale.model.GetSaleRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -28,6 +30,7 @@ public class SaleProvider {
         this.saleDao = saleDao;
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetSaleRes> getSales(int userId)throws BaseException {
         try {
             return saleDao.getSales(userId);
@@ -36,6 +39,7 @@ public class SaleProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetSaleRes> getSalesCancel(int userId)throws BaseException {
         try {
             return saleDao.getSalesCancel(userId);
@@ -44,6 +48,7 @@ public class SaleProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetSaleRes> getSalesProgress(int userId)throws BaseException {
         try {
             return saleDao.getSalesProgress(userId);
@@ -52,6 +57,7 @@ public class SaleProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetSaleRes> getSalesComplete(int userId)throws BaseException {
         try {
             return saleDao.getSalesComplete(userId);

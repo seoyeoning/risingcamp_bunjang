@@ -35,6 +35,12 @@ public class OrderController {
     @GetMapping("/{userId}")
     public BaseResponse<List<GetOrderRes>> getOrders(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getOrders(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -43,9 +49,15 @@ public class OrderController {
 
     //취소/환불 구매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/cancel")
+    @GetMapping("/cancels/{userId}")
     public BaseResponse<List<GetOrderRes>> getOrdersCancel(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getOrdersCancel(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -54,9 +66,15 @@ public class OrderController {
 
     //진행중 구매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/progress")
+    @GetMapping("/progresses/{userId}")
     public BaseResponse<List<GetOrderRes>> getOrdersProgress(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getOrdersProgress(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -65,9 +83,15 @@ public class OrderController {
 
     //완료된 구매내역 조회
     @ResponseBody
-    @GetMapping("/{userId}/complete")
+    @GetMapping("/completes/{userId}")
     public BaseResponse<List<GetOrderRes>> getOrdersComplete(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getOrdersComplete(userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -77,6 +101,12 @@ public class OrderController {
     @GetMapping("/{id}/{userId}")
     public BaseResponse getOrderParcel(@PathVariable("id") int id,@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getOrderParcel(id,userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -103,6 +133,12 @@ public class OrderController {
     @PostMapping("")
     public BaseResponse PostParcelOrder(@RequestBody PostOrderReq postOrderReq){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(postOrderReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             orderService.postParcelOrder(postOrderReq);
             String result="결제 성공";
             return new BaseResponse<>(result);
@@ -115,6 +151,12 @@ public class OrderController {
     @PostMapping("/directs")
     public BaseResponse PostDirectOrder(@RequestBody PostOrderReq postOrderReq){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(postOrderReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             orderService.postDirectOrder(postOrderReq);
             String result="결제 성공";
             return new BaseResponse<>(result);
@@ -124,9 +166,15 @@ public class OrderController {
     }
 
     @ResponseBody
-    @GetMapping("/parcelTrades/{id}/{userId}")
+    @GetMapping("/parcel-trades/{id}/{userId}")
     public BaseResponse getTradeInfo(@PathVariable("id") int id,@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getTradeInfo(id,userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -134,9 +182,15 @@ public class OrderController {
     }
 
     @ResponseBody
-    @GetMapping("/directTrades/{id}/{userId}")
+    @GetMapping("/direct-trades/{id}/{userId}")
     public BaseResponse getDirectTradeInfo(@PathVariable("id") int id,@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getDirectTradeInfo(id, userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

@@ -41,7 +41,7 @@ public class SaleDao {
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
-                "where Sales.userId=? and Sales.status=? and Sales.status=?";
+                "where Sales.userId=? and Sales.status=? or Sales.status=?";
         return this.jdbcTemplate.query(getSalesQuery,
                 (rs, rowNum) -> new GetSaleRes(
                         rs.getString("url1"),
@@ -73,7 +73,7 @@ public class SaleDao {
     }
 
     public List<GetSaleRes> getSalesComplete(int userId){
-        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
+        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.createAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
