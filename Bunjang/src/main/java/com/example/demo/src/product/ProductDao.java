@@ -1,6 +1,7 @@
 package com.example.demo.src.product;
 
 import com.example.demo.src.product.model.*;
+import com.example.demo.src.product.model.GetKeywordRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -104,7 +105,7 @@ public class ProductDao {
                         rs.getString("category"),
                         rs.getInt("bookmarkCnt"),
                         getProductTagRes
-                        ),
+                ),
                 getProductDetailParams);
     }
 
@@ -233,7 +234,65 @@ public class ProductDao {
 
     }
 
+    //키워드로 검색
+    public List<GetMainProductsRes> searchProducts(String keyword){
+        String searchProductsQuery = "select Products.id, url1, format(price, '###,###') as price, productName, location,\n" +
+                "                       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
+                "                then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
+                "                    when TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()) < 24\n" +
+                "                    then concat(TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()), '시간 전')\n" +
+                "                    WHEN TIMESTAMPDIFF(DAY ,Products.createAt, NOW()) < 30\n" +
+                "                    then concat(TIMESTAMPDIFF(DAY ,Products.createAt, NOW()), '일 전')\n" +
+                "                end) as timeDiff , safePay, count( BookMarks.productId) as bookmarkCnt\n" +
+                "                from Products\n" +
+                "                inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
+                "                left join BookMarks on BookMarks.productId = Products.id\n" +
+                "                where productName like concat('%',?,'%') group by productName";
 
+        return this.jdbcTemplate.query(searchProductsQuery,
+                (rs, rowNum) -> new GetMainProductsRes(
+                        rs.getInt("id"),
+                        rs.getString("url1"),
+                        rs.getString("price"),
+                        rs.getString("productName"),
+                        rs.getString("location"),
+                        rs.getString("timeDiff"),
+                        rs.getString("safePay"),
+                        rs.getInt("bookmarkCnt")),keyword
+        );
+    }
+
+    public List<GetKeywordRes> getKeywords(String keyword){
+        String getKeywordsQuery="select productName,id from Products where productName like concat( ?,'%')";
+        return this.jdbcTemplate.query(getKeywordsQuery,
+                (rs, rowNum) -> new GetKeywordRes(
+                        rs.getString("productName"),
+                        rs.getInt("id")),keyword
+        );
+    }
+
+    public List<GetStoreKeywordRes> getStoreKeywords(String keyword){
+        String getStoreKeywordQuery="select storeName, storeProfileImgUrl, Stores.storeId from\n" +
+                "Stores where storeName like concat('%',?,'%')";
+        String getStoreIdQuery="select storeId from Stores where storeName like concat('%',?,'%')";
+        int userId=this.jdbcTemplate.queryForObject(getStoreIdQuery,int.class,keyword);
+        String getFollowerQuery="select count(Followers.userId) from Followers where userId=?";
+        String getProductCntQuery="select count(Products.userId) from Products where userId=?";
+        return this.jdbcTemplate.query(getStoreKeywordQuery,
+                (rs, rowNum) -> new GetStoreKeywordRes(
+                        rs.getString("storeName"),
+                        rs.getString("storeProfileImgUrl"),
+                        rs.getInt("storeId"),
+                        this.jdbcTemplate.queryForObject(getFollowerQuery,int.class,userId),
+                        this.jdbcTemplate.queryForObject(getProductCntQuery,int.class,userId)
+                        ),keyword
+        );
+    }
+
+
+
+
+    
 }
 
 

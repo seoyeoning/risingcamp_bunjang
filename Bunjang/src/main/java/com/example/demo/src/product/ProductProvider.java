@@ -93,4 +93,27 @@ public class ProductProvider {
         }
     }
 
+    public List<GetMainProductsRes> getSearch(String keyword)throws BaseException{
+        try {
+            return productDao.searchProducts(keyword);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetKeywordRes> getKeywords(String keyword)throws BaseException{
+        try {
+            return productDao.getKeywords(keyword);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetStoreKeywordRes> getStoreKeywords(String keyword)throws BaseException{
+        try {
+            return productDao.getStoreKeywords(keyword);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
