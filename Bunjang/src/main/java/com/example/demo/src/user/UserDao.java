@@ -164,17 +164,10 @@ public class UserDao {
             this.jdbcTemplate.update(createAuthQuery,createAuthParams);
     }
 
-    public void deleteAut(PostAuthNumReq postAuthNumReq){
-<<<<<<< HEAD
-
+    public void deleteAuth(PostAuthNumReq postAuthNumReq){
         String deleteAuthQuery="delete from AuthNumbers where phone=?";
         Object[] deleteAuthParams=new Object[]{postAuthNumReq.getPhone()};
 
-
-=======
-            String deleteAuthQuery="delete from AuthNumbers where phone=?";
-            Object[] deleteAuthParams=new Object[]{postAuthNumReq.getPhone(),postAuthNumReq.getNumber()};
->>>>>>> dev_test
             this.jdbcTemplate.update(deleteAuthQuery,deleteAuthParams);
     }
 

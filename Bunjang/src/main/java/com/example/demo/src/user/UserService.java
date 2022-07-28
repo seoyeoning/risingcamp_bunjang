@@ -126,7 +126,7 @@ public class UserService {
 
     public void deleteAuth(PostAuthNumReq postAuthNumReq)throws BaseException{
         try {
-            userDao.deleteAut(postAuthNumReq);
+            userDao.deleteAuth(postAuthNumReq);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
