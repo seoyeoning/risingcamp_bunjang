@@ -21,7 +21,7 @@ public class CategoryDao {
     }
 
     // 첫번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getFirstCategoryProducts(GetFirstCategoryProductsReq getFirstCategoryProductsReq) {
+    public List<GetMainProductsRes> getFirstCategoryProducts(int firstIdx) {
 
         String getFirstCategoryProductsQuery = "select Products.id, url1, format(price, '###,###') as price, productName, location,\n" +
                 "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
@@ -37,7 +37,7 @@ public class CategoryDao {
                 "left join BookMarks on BookMarks.productId = Products.id\n" +
                 "where FirstCategory.firstCategoryId = ?\n" +
                 "group by Products.id";
-        int getFirstCategoryProductsParams = getFirstCategoryProductsReq.getFirstCategoryId();
+        int getFirstCategoryProductsParams = firstIdx;
 
         return this.jdbcTemplate.query(getFirstCategoryProductsQuery,
                 (rs, rowNum) -> new GetMainProductsRes(
@@ -53,7 +53,7 @@ public class CategoryDao {
     }
 
     // 두번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getSecondCategoryProducts(GetSecondCategoryProductsReq getSecondCategoryProductsReq) {
+    public List<GetMainProductsRes> getSecondCategoryProducts(int firstIdx,int secondIdx) {
 
         String getSecondCategoryProductsQuery = "select Products.id, url1, format(price, '###,###') as price, productName, location,\n" +
                 "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
@@ -71,7 +71,7 @@ public class CategoryDao {
                 "where FirstCategory.firstCategoryId = ? and SecondCategory.secondCategoryId = ?\n" +
                 "group by Products.id;";
 
-        Object[] getSecondCategoryProductsParams = new Object[]{getSecondCategoryProductsReq.getFirstCategoryId(),getSecondCategoryProductsReq.getSecondCategoryId()};
+        Object[] getSecondCategoryProductsParams = new Object[]{firstIdx,secondIdx};
 
         return this.jdbcTemplate.query(getSecondCategoryProductsQuery,
                 (rs, rowNum) -> new GetMainProductsRes(
@@ -88,7 +88,7 @@ public class CategoryDao {
     }
 
     // 세번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getThirdCategoryProducts(GetThirdCategoryProductsReq getThirdCategoryProductsReq) {
+    public List<GetMainProductsRes> getThirdCategoryProducts(int firstIdx,int secondIdx, int thirdIdx) {
 
         String getThirdCategoryProductsQuery = "select Products.id, url1, format(price, '###,###') as price, productName, location,\n" +
                 "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
@@ -107,8 +107,7 @@ public class CategoryDao {
                 "where FirstCategory.firstCategoryId = ? and SecondCategory.secondCategoryId = ? and ThirdCategory.thirdCategoryId = ?\n" +
                 "group by Products.id;";
 
-        Object[] getThirdCategoryProductsParams = new Object[]{getThirdCategoryProductsReq.getFirstCategoryId(), getThirdCategoryProductsReq.getSecondCategoryId(),
-        getThirdCategoryProductsReq.getThirdCategoryId()};
+        Object[] getThirdCategoryProductsParams = new Object[]{firstIdx,secondIdx,thirdIdx};
 
         return this.jdbcTemplate.query(getThirdCategoryProductsQuery,
                 (rs, rowNum) -> new GetMainProductsRes(

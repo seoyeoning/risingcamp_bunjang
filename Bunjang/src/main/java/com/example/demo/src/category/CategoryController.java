@@ -38,14 +38,14 @@ public class CategoryController {
 
     /**
      * 첫번째 카테고리 상품 조회
-     * /first-category
+     * /:firstIdx
      */
     @ResponseBody
-    @GetMapping("/first-category")
-    public BaseResponse<List<GetMainProductsRes>> getFirstCategoryProducts(@RequestBody GetFirstCategoryProductsReq getFirstCategoryProductsReq) {
+    @GetMapping("/{firstIdx}")
+    public BaseResponse<List<GetMainProductsRes>> getFirstCategoryProducts(@PathVariable("firstIdx") int firstIdx) {
         try {
 
-            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getFirstCategoryProducts(getFirstCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getFirstCategoryProducts(firstIdx);
 
             return new BaseResponse<>(getMainProductsRes);
 
@@ -56,14 +56,14 @@ public class CategoryController {
 
     /**
      * 두번째 카테고리 상품 조회
-     * /second-category
+     * /:firstIdx/:secondIdx
      */
     @ResponseBody
-    @GetMapping("second-category")
-    public BaseResponse<List<GetMainProductsRes>> getSecondCategoryProducts(@RequestBody GetSecondCategoryProductsReq getSecondCategoryProductsReq) {
+    @GetMapping("/{firstIdx}/{secondIdx}")
+    public BaseResponse<List<GetMainProductsRes>> getSecondCategoryProducts(@PathVariable("firstIdx") int firstIdx, @PathVariable("secondIdx") int secondIdx) {
         try {
 
-            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getSecondCategoryProducts(getSecondCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getSecondCategoryProducts(firstIdx,secondIdx);
 
             return new BaseResponse<>(getMainProductsRes);
 
@@ -74,14 +74,14 @@ public class CategoryController {
 
     /**
      * 세번째 카테고리 상품 조회
-     * /third-category
+     * /:firstIdx/:secondIdx/:thirdIdx
      */
     @ResponseBody
-    @GetMapping("/third-category")
-    public BaseResponse<List<GetMainProductsRes>> getThirdCategoryProducts(@RequestBody GetThirdCategoryProductsReq getThirdCategoryProductsReq) {
+    @GetMapping("/{firstIdx}/{secondIdx}/{thirdIdx}")
+    public BaseResponse<List<GetMainProductsRes>> getThirdCategoryProducts(@PathVariable("firstIdx") int firstIdx,@PathVariable("secondIdx") int secondIdx,@PathVariable("thirdIdx") int thirdIdx) {
         try {
 
-            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getThirdCategoryProducts(getThirdCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryProvider.getThirdCategoryProducts(firstIdx,secondIdx,thirdIdx);
 
             return new BaseResponse<>(getMainProductsRes);
 

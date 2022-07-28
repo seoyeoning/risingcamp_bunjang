@@ -21,6 +21,7 @@ public class UserDao {
     // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
 
     private JdbcTemplate jdbcTemplate;
+    private UserDao th;
 
     @Autowired //readme 참고
     public void setDataSource(DataSource dataSource) {
@@ -288,6 +289,43 @@ public class UserDao {
                             rs.getString("price"),
                             rs.getString("safePay")),
                     getUserHistoryProductParams);
+
+    }
+
+    // 마이 페이지 조회
+    public List<GetUserMyRes> getUserMy(int userIdx) {
+            String getUserMyQuery = "select Products.id, storeProfileImgUrl, storeName,\n" +
+                    "       (select count(bookMarkid)\n" +
+                    "from BookMarks\n" +
+                    "where BookMarks.userId = ?) bookmarkCnt\n" +
+                    ",url1, productName, format(price, '###,###') as price,\n" +
+                    "       (select case when TIMESTAMPDIFF(SECOND ,Products.createAt,NOW()) <= 60\n" +
+                    "       then concat(TIMESTAMPDIFF(SECOND ,Products.createAt,NOW()),'초 전')\n" +
+                    "           when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
+                    "then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
+                    "    when TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()) < 24\n" +
+                    "    then concat(TIMESTAMPDIFF(HOUR ,Products.createAt, NOW()), '시간 전')\n" +
+                    "    WHEN TIMESTAMPDIFF(DAY ,Products.createAt, NOW()) < 30\n" +
+                    "    then concat(TIMESTAMPDIFF(DAY ,Products.createAt, NOW()), '일 전')\n" +
+                    "end) as timeDiff\n" +
+                    "from Products\n" +
+                    "inner join Users on Users.userId = Products.userId\n" +
+                    "inner join Stores on Stores.userId = Users.userId\n" +
+                    "inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
+                    "where Users.userId = ?";
+            Object[] getUserMyParams = new Object[]{userIdx,userIdx};
+
+        return this.jdbcTemplate.query(getUserMyQuery,
+                (rs, rowNum) -> new GetUserMyRes(
+                        rs.getInt("id"),
+                        rs.getString("storeProfileImgUrl"),
+                        rs.getString("storeName"),
+                        rs.getInt("bookmarkCnt"),
+                        rs.getString("url1"),
+                        rs.getString("productName"),
+                        rs.getString("price"),
+                        rs.getString("timeDiff")),
+                getUserMyParams);
 
     }
 
