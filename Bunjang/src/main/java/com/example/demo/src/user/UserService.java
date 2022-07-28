@@ -69,8 +69,10 @@ public class UserService {
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void modifyUserStoreInfo(int userIdx, PatchUserStoreInfoReq patchUserStoreInfoReq) throws BaseException {
         try {
-            userDao.modifyUserStoreInfo(userIdx,patchUserStoreInfoReq);
-
+            int result = userDao.modifyUserStoreInfo(userIdx,patchUserStoreInfoReq);
+            if (result == 0) {
+                throw new BaseException(MODIFY_FAIL_STOREINFO);
+            }
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

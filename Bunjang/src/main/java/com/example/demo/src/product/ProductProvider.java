@@ -35,6 +35,12 @@ public class ProductProvider {
     // 상품 상세 페이지 조회
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetProductDetailRes getProductDetail(int productIdx, int userIdx) throws BaseException {
+        if (productDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
+        if(productDao.checkProduct(productIdx) == 0) {
+            throw new BaseException(INVALID_PRODUCT);
+        }
         try {
             GetProductDetailRes getProductDetailRes = productDao.getProductDetail(productIdx,userIdx);
             return getProductDetailRes;

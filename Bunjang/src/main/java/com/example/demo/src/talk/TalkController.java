@@ -43,6 +43,7 @@ public class TalkController {
     @PostMapping("")
     public BaseResponse<String> postTalk(@RequestBody PostTalkReq postTalkReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             int roomId = talkService.postTalk(postTalkReq);
 
             String result = "성공적으로 전송되었습니다. ( roomIdx : " + roomId +" )";
@@ -62,7 +63,7 @@ public class TalkController {
     @PostMapping("/directTransaction")
     public BaseResponse<String> postDirectTransaction(@RequestBody PostDirectTransactionReq postDirectTransactionReq) {
         try {
-
+            int userIdxByJwt = jwtService.getUserIdx();
             int directTransactionId = talkService.postDirectTransaction(postDirectTransactionReq);
 
             String result = "직거래를 성공적으로 요청하였습니다. " + "직거래 id는 " +  directTransactionId +"입니다.";
@@ -75,13 +76,14 @@ public class TalkController {
     }
 
     /**
-     * 직거래 요청 수정 (승인 정 수정 가능)
+     * 직거래 요청 수정
      * [PATCH] /directTransaction
      */
     @ResponseBody
     @PatchMapping("/directTransaction")
     public BaseResponse<String> modifyDirectTransaction(@RequestBody ModifyDirectTransactionReq modifyDirectTransactionReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             talkService.modifyDirectTransaction(modifyDirectTransactionReq);
             String result = "직거래의 정보를 성공적으로 수정하였습니다.";
 
@@ -100,6 +102,7 @@ public class TalkController {
     @PostMapping("/directTransaction/approval")
     public BaseResponse<String> approvalDirectTransaction(@RequestBody ApprovalDirectTransactionReq approvalDirectTransactionReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             talkService.approvalDirectTransaction(approvalDirectTransactionReq);
             String result = "직거래 요청이 승인되어 거래가 약속되었습니다.";
 
@@ -118,6 +121,7 @@ public class TalkController {
     @GetMapping("/directTransaction/detail")
     public BaseResponse<GetDirectTransactionInfoRes> getDirectTransactionInfo(@RequestBody GetDirectTransactionInfoReq getDirectTransactionInfoReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             GetDirectTransactionInfoRes getDirectTransactionInfoRes = talkProvider.getDirectTransactionInfo(getDirectTransactionInfoReq);
 
             return new BaseResponse<>(getDirectTransactionInfoRes);
@@ -134,6 +138,7 @@ public class TalkController {
     @PostMapping("/directTransaction/done")
     public BaseResponse<String> directTransactionDone(@RequestBody ApprovalDirectTransactionReq approvalDirectTransactionReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             talkService.directTransactionDone(approvalDirectTransactionReq);
             String result = "직거래가 완료되었습니다. ";
 
@@ -151,6 +156,7 @@ public class TalkController {
     @GetMapping("/{roomIdx}")
     public BaseResponse<List<GetUserChatsRes>> getUserChats(@PathVariable("roomIdx") int roomIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
             List<GetUserChatsRes> getUserChatsRes = talkProvider.getUserChats(roomIdx);
 
             return new BaseResponse<>(getUserChatsRes);

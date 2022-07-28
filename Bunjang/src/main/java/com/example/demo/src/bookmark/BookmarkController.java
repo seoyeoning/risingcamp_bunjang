@@ -44,6 +44,11 @@ public class BookmarkController {
     @PostMapping("/{userIdx}/{productIdx}")
     public BaseResponse<String> createPatchBookmark(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             String result = bookmarkService.createPatchBookmark(userIdx,productIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -59,6 +64,10 @@ public class BookmarkController {
     @GetMapping("/{userIdx}")
     public BaseResponse<List<GetUserBookmarksRes>> getUserBookmarks(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
             List<GetUserBookmarksRes> getUserBookmarksRes = bookmarkProvider.getUserBookmarks(userIdx);
 
@@ -77,6 +86,11 @@ public class BookmarkController {
     @GetMapping("/{userIdx}/{productIdx}")
     public BaseResponse existBookmark(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             int result = bookmarkProvider.existBookmark(userIdx,productIdx);
 
             return new BaseResponse(result);

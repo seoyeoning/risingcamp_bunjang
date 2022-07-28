@@ -16,7 +16,7 @@ public class ModifyDirectTransactionReq {
     private int sendUserIdx;
     private int receiveUserIdx;
     private int productId;
-    private String price;
+    private int price;
     private String deliveryTip;
     @JsonFormat(pattern = "yyyy년 MM월 dd일", timezone = "Asia/Seoul")
     private LocalDate transactionDate;
