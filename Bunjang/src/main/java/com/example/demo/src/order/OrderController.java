@@ -39,38 +39,38 @@ public class OrderController {
         }
     }
 
-//    //취소/환불 구매내역 조회
-//    @ResponseBody
-//    @GetMapping("/{userId}/cancel")
-//    public BaseResponse<List<GetOrderRes>> getOrdersCancel(@PathVariable("userId") int userId){
-//        try {
-//            return new BaseResponse<>(orderProvider.getOrdersCancel(userId));
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
-//
-//    //진행중 구매내역 조회
-//    @ResponseBody
-//    @GetMapping("/{userId}/progress")
-//    public BaseResponse<List<GetOrderRes>> getOrdersProgress(@PathVariable("userId") int userId){
-//        try {
-//            return new BaseResponse<>(orderProvider.getOrdersProgress(userId));
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
-//
-//    //완료된 구매내역 조회
-//    @ResponseBody
-//    @GetMapping("/{userId}/complete")
-//    public BaseResponse<List<GetOrderRes>> getOrdersComplete(@PathVariable("userId") int userId){
-//        try {
-//            return new BaseResponse<>(orderProvider.getOrdersComplete(userId));
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+    //취소/환불 구매내역 조회
+    @ResponseBody
+    @GetMapping("/{userId}/cancel")
+    public BaseResponse<List<GetOrderRes>> getOrdersCancel(@PathVariable("userId") int userId){
+        try {
+            return new BaseResponse<>(orderProvider.getOrdersCancel(userId));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //진행중 구매내역 조회
+    @ResponseBody
+    @GetMapping("/{userId}/progress")
+    public BaseResponse<List<GetOrderRes>> getOrdersProgress(@PathVariable("userId") int userId){
+        try {
+            return new BaseResponse<>(orderProvider.getOrdersProgress(userId));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //완료된 구매내역 조회
+    @ResponseBody
+    @GetMapping("/{userId}/complete")
+    public BaseResponse<List<GetOrderRes>> getOrdersComplete(@PathVariable("userId") int userId){
+        try {
+            return new BaseResponse<>(orderProvider.getOrdersComplete(userId));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
     @ResponseBody
     @GetMapping("/{id}/{userId}")
     public BaseResponse getOrderParcel(@PathVariable("id") int id,@PathVariable("userId") int userId){

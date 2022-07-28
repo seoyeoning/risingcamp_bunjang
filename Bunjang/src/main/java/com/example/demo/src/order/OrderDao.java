@@ -38,62 +38,62 @@ public class OrderDao {
                 userId);
     }
 
-//    //취소/환불 조회
-//    public List<GetOrderRes> getOrdersCancel(int userId){
-//        String getOrdersCancelQuery="select url1, productName, Orders.status, storeName,price, date_format(Orders.updateAt,'%Y.%m.%d (%r)')\n" +
-//                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
-//                "join Stores S on Products.userId = S.userId\n" +
-//                "join Orders on Orders.productId=Products.id\n" +
-//                "where Orders.userId=? and Orders.status=? or Orders.status=? ";
-//        return this.jdbcTemplate.query(getOrdersCancelQuery,
-//                (rs, rowNum) -> new GetOrderRes(
-//                        rs.getString("url1"),
-//                        rs.getString("productName"),
-//                        rs.getString("status"),
-//                        rs.getString("storeName"),
-//                        rs.getInt("price"),
-//                        rs.getString("date")
-//                ),
-//                userId,"환불완료","결제취소");
-//    }
-//
-//    //진행중
-//    public List<GetOrderRes> getOrdersProgress(int userId){
-//        String getOrdersQuery="select url1, productName, Orders.status, storeName,price, date_format(Orders.createAt,'%Y.%m.%d (%r)')\n" +
-//                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
-//                "join Stores S on Products.userId = S.userId\n" +
-//                "join Orders on Orders.productId=Products.id\n" +
-//                "where Orders.userId=? and Orders.status=?";
-//        return this.jdbcTemplate.query(getOrdersQuery,
-//                (rs, rowNum) -> new GetOrderRes(
-//                        rs.getString("url1"),
-//                        rs.getString("productName"),
-//                        rs.getString("status"),
-//                        rs.getString("storeName"),
-//                        rs.getInt("price"),
-//                        rs.getString("date")
-//                ),
-//                userId,"진행중");
-//    }
-//
-//    //완료
-//    public List<GetOrderRes> getOrdersComplete(int userId) {
-//        String getOrdersQuery = "select url1, productName, Orders.status, storeName,price, date_format(Orders.createAt,'%Y.%m.%d (%r)')\n" +
-//                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
-//                "join Stores S on Products.userId = S.userId\n" +
-//                "join Orders on Orders.productId=Products.id\n" +
-//                "where Orders.userId=? and Orders.status=?";
-//        return this.jdbcTemplate.query(getOrdersQuery,
-//                (rs, rowNum) -> new GetOrderRes(
-//                        rs.getString("url1"),
-//                        rs.getString("productName"),
-//                        rs.getString("status"),
-//                        rs.getString("storeName"),
-//                        rs.getInt("price"),
-//                        rs.getString("date")
-//                ),
-//                userId, "결제완료");
-//    }
+    //취소/환불 조회
+    public List<GetOrderRes> getOrdersCancel(int userId){
+        String getOrdersCancelQuery="select url1, productName, Orders.status, storeName,price, date_format(Orders.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
+                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
+                "join Stores S on Products.userId = S.userId\n" +
+                "join Orders on Orders.productId=Products.id\n" +
+                "where Orders.userId=? and Orders.status=? or Orders.status=? ";
+        return this.jdbcTemplate.query(getOrdersCancelQuery,
+                (rs, rowNum) -> new GetOrderRes(
+                        rs.getString("url1"),
+                        rs.getString("productName"),
+                        rs.getString("status"),
+                        rs.getString("storeName"),
+                        rs.getInt("price"),
+                        rs.getString("orderDate")
+                ),
+                userId,"환불완료","결제취소");
+    }
+
+    //진행중
+    public List<GetOrderRes> getOrdersProgress(int userId){
+        String getOrdersQuery="select url1, productName, Orders.status, storeName,price, date_format(Orders.createAt,'%Y.%m.%d (%r)') AS orderDate\n" +
+                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
+                "join Stores S on Products.userId = S.userId\n" +
+                "join Orders on Orders.productId=Products.id\n" +
+                "where Orders.userId=? and Orders.status=?";
+        return this.jdbcTemplate.query(getOrdersQuery,
+                (rs, rowNum) -> new GetOrderRes(
+                        rs.getString("url1"),
+                        rs.getString("productName"),
+                        rs.getString("status"),
+                        rs.getString("storeName"),
+                        rs.getInt("price"),
+                        rs.getString("orderDate")
+                ),
+                userId,"진행중");
+    }
+
+    //완료
+    public List<GetOrderRes> getOrdersComplete(int userId) {
+        String getOrdersQuery = "select url1, productName, Orders.status, storeName,price, date_format(Orders.createAt,'%Y.%m.%d (%r)')AS orderDate\n" +
+                "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
+                "join Stores S on Products.userId = S.userId\n" +
+                "join Orders on Orders.productId=Products.id\n" +
+                "where Orders.userId=? and Orders.status=?";
+        return this.jdbcTemplate.query(getOrdersQuery,
+                (rs, rowNum) -> new GetOrderRes(
+                        rs.getString("url1"),
+                        rs.getString("productName"),
+                        rs.getString("status"),
+                        rs.getString("storeName"),
+                        rs.getInt("price"),
+                        rs.getString("orderDate")
+                ),
+                userId, "결제완료");
+    }
 
     public GetOrderParcelRes getOrderParcel(int productId, int userId) {
         String getOrderParcelQuery = "select url1, productName, price from Products\n" +
@@ -175,6 +175,11 @@ public class OrderDao {
         Object[] postOrderParams = new Object[]{postOrderReq.getUserId(), postOrderReq.getProductId(), postOrderReq.getPointScore(),
                 "택배거래", totalPrice,postOrderReq.getPaymentMethod() ,postOrderReq.getAddress(), postOrderReq.getAddressReq()
         };
+        String postSalesQuery = "insert into Sales(storeId,productId,pointScore,tradeMethod, totalPrice,paymentMethod, address, addressReq) values(?,?,?,?,?,?,?,?)";
+        Object[] postSalesParams = new Object[]{postOrderReq.getUserId(), postOrderReq.getProductId(), postOrderReq.getPointScore(),
+                "택배거래", totalPrice,postOrderReq.getPaymentMethod() ,postOrderReq.getAddress(), postOrderReq.getAddressReq()
+        };
+        this.jdbcTemplate.update(postSalesQuery,postSalesParams);
         this.jdbcTemplate.update(postOrderQuery, postOrderParams);
     }
 
@@ -188,6 +193,12 @@ public class OrderDao {
         Object[] postOrderParams = new Object[]{postOrderReq.getUserId(), postOrderReq.getProductId(), postOrderReq.getPointScore(),
                 "직거래", totalPrice,postOrderReq.getPaymentMethod()
         };
+
+        Object[] postSalesParams = new Object[]{postOrderReq.getUserId(), postOrderReq.getProductId(), postOrderReq.getPointScore(),
+                "직거래", totalPrice,postOrderReq.getPaymentMethod()
+        };
+        String postSalesQuery = "insert into Sales(storeId,productId,pointScore,tradeMethod, totalPrice, paymentMethod) values(?,?,?,?,?,?)";
+        this.jdbcTemplate.update(postSalesQuery,postSalesParams);
         this.jdbcTemplate.update(postOrderQuery, postOrderParams);
     }
 

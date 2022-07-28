@@ -19,7 +19,7 @@ public class SaleDao {
     }
 
     public List<GetSaleRes> getSales(int userId){
-        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')\n" +
+        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
@@ -31,13 +31,13 @@ public class SaleDao {
                         rs.getString("status"),
                         rs.getString("storeName"),
                         rs.getString("price"),
-                        rs.getString("date")
+                        rs.getString("orderDate")
                 ),
                 userId);
     }
 
     public List<GetSaleRes> getSalesCancel(int userId){
-        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')\n" +
+        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
@@ -49,13 +49,13 @@ public class SaleDao {
                         rs.getString("status"),
                         rs.getString("storeName"),
                         rs.getString("price"),
-                        rs.getString("date")
+                        rs.getString("orderDate")
                 ),
                 userId,"환불완료","판매취소");
     }
 
     public List<GetSaleRes> getSalesProgress(int userId){
-        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.createAt,'%Y.%m.%d (%r)')\n" +
+        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.createAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
@@ -67,13 +67,13 @@ public class SaleDao {
                         rs.getString("status"),
                         rs.getString("storeName"),
                         rs.getString("price"),
-                        rs.getString("date")
+                        rs.getString("orderDate")
                 ),
                 userId,"진행중");
     }
 
     public List<GetSaleRes> getSalesComplete(int userId){
-        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')\n" +
+        String getSalesQuery="select url1, productName, Sales.status, storeName,price, date_format(Sales.updateAt,'%Y.%m.%d (%r)')AS orderDate\n" +
                 "from Products join ProductImgUrls on ProductImgUrls.productId=Products.id\n" +
                 "join Sales on Sales.productId=Products.id\n" +
                 "join Stores S on Sales.storeId=S.storeId\n" +
@@ -85,7 +85,7 @@ public class SaleDao {
                         rs.getString("status"),
                         rs.getString("storeName"),
                         rs.getString("price"),
-                        rs.getString("date")
+                        rs.getString("orderDate")
                 ),
                 userId,"판매완료");
     }

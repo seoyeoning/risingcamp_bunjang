@@ -4,9 +4,17 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.address.model.*;
 import com.example.demo.utils.JwtService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -98,10 +106,10 @@ public class AddressController {
     }
 
     @ResponseBody
-    @GetMapping("/search/address/number")
-    public BaseResponse searchLocation(){
+    @GetMapping("/locations/{keyword}")
+    public BaseResponse searchLocation(@PathVariable("keyword") String keyword){
         try {
-            return new BaseResponse<>(addressProvider.searchLocation());
+            return new BaseResponse<>(addressProvider.searchLocation(keyword));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

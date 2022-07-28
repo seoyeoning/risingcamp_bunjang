@@ -29,29 +29,29 @@ public class OrderProvider {
 
     }
 
-//    public List<GetOrderRes> getOrdersCancel(int userId)throws BaseException {
-//        try {
-//            return orderDao.getOrdersCancel(userId);
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    public List<GetOrderRes> getOrdersProgress(int userId)throws BaseException {
-//        try {
-//            return orderDao.getOrdersProgress(userId);
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    public List<GetOrderRes> getOrdersComplete(int userId)throws BaseException {
-//        try {
-//            return orderDao.getOrdersComplete(userId);
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    public List<GetOrderRes> getOrdersCancel(int userId)throws BaseException {
+        try {
+            return orderDao.getOrdersCancel(userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetOrderRes> getOrdersProgress(int userId)throws BaseException {
+        try {
+            return orderDao.getOrdersProgress(userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetOrderRes> getOrdersComplete(int userId)throws BaseException {
+        try {
+            return orderDao.getOrdersComplete(userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
     public GetOrderParcelRes getOrderParcel(int productId, int userId)throws BaseException{
         try {

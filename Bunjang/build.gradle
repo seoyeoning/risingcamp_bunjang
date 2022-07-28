@@ -29,7 +29,6 @@ repositories {
 dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
 
-
     // Spring Boot Starter
     testImplementation ('org.springframework.boot:spring-boot-starter-test')
 
@@ -58,7 +57,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
 
     implementation(group: 'net.nurigo', name: 'javaSDK', version: '2.2')
-
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 
 }
