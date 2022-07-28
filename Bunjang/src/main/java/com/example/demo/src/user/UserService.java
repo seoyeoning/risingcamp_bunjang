@@ -19,7 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -51,6 +53,7 @@ public class UserService {
 
 
     // 회원정보 수정(Patch)
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void modifyUserInfo(int userIdx, PatchUserInfoReq patchUserInfoReq) throws BaseException {
         try {
             int result = userDao.modifyUserInfo(userIdx, patchUserInfoReq);
@@ -63,6 +66,7 @@ public class UserService {
     }
 
     // 회원 상점 정보 수정
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void modifyUserStoreInfo(int userIdx, PatchUserStoreInfoReq patchUserStoreInfoReq) throws BaseException {
         try {
             int result = userDao.modifyUserStoreInfo(userIdx,patchUserStoreInfoReq);
@@ -74,6 +78,7 @@ public class UserService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
             try {
                 User user=userDao.getUserId(postLoginReq);
@@ -82,11 +87,12 @@ public class UserService {
                 return new PostLoginRes(userId,jwt);
 
             } catch (Exception exception) {
-                throw new BaseException(DATABASE_ERROR);
+                throw new BaseException(LOGIN_FAIL);
             }
         }
 
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public PostLoginRes sighIn(PostLoginReq postLoginReq) throws BaseException{
             try {
                 int userIdx = userDao.createUser(postLoginReq);
@@ -100,6 +106,7 @@ public class UserService {
         }
 
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
 
         String api_key = "NCSRPJHD6ZZAZPTB";
@@ -126,6 +133,7 @@ public class UserService {
 
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void createAuth(PostAuthNumReq postAuthNumReq)throws BaseException{
         try {
             userDao.createAuth(postAuthNumReq);
@@ -134,15 +142,17 @@ public class UserService {
     }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void deleteAuth(PostAuthNumReq postAuthNumReq)throws BaseException{
         try {
-            userDao.deleteAut(postAuthNumReq);
+            userDao.deleteAuth(postAuthNumReq);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
     // 상점 차단
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void createBlockStore(int userIdx, int storeIdx) throws BaseException {
         try {
             userDao.createBlockStore(userIdx, storeIdx);
@@ -153,6 +163,7 @@ public class UserService {
     }
 
     // 카카오 소셜로그인 AccessToken 받기
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public String getKaKaoAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";
@@ -210,6 +221,7 @@ public class UserService {
     }
 
     // 카카오 소셜 사용자 정보 받기
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public String createKakaoUser(String token) throws BaseException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -259,6 +271,7 @@ public class UserService {
     }
 
     // 카카오 로그인/회원 가입
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetKakao connectKakao(String email) throws BaseException {
         try {
             if (userProvider.checkKakaoUser(email) == 1) {

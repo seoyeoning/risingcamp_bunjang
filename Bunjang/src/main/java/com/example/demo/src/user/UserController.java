@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping("/sigh-in")
+    @PostMapping("/sigh-up")
     public BaseResponse<PostLoginRes> sighIn(@RequestBody PostLoginReq postLoginReq) {
         try {
 
@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping("/check/{phone}")
+    @GetMapping("/checks/{phone}")
     public BaseResponse checkAccount(@PathVariable("phone") String phone){
         try {
 
@@ -88,7 +88,7 @@ public class UserController {
 
 
 
-    @PostMapping("/check/sendSMS")
+    @PostMapping("/checks/send-sms")
     @ResponseBody
     public BaseResponse sendSMS(@RequestBody PostAuthNumReq postAuthNumReq) {
 
@@ -111,7 +111,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/check/sendSMS")
+    @DeleteMapping("/checks/send-sms")
     @ResponseBody
     public BaseResponse deleteAuth(@RequestBody PostAuthNumReq postAuthNumReq){
         try {
@@ -123,7 +123,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/check/sendSMS/{phone}/{number}")
+    @GetMapping("/checks/send-sms/{phone}/{number}")
     @ResponseBody
     public BaseResponse checkAuth(@PathVariable("phone") String phone,@PathVariable("number") String number){
         if(number.length()!=6) return new BaseResponse<>(USERS_LENGTH_USER_NUMBER);
