@@ -5,6 +5,9 @@ import com.example.demo.src.account.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -24,6 +27,8 @@ public class AccountService {
     }
 
     //계좌 추가
+
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void creatUserAccount(int userIdx,PostUserAccountReq postUserAccountReq) throws BaseException{
         // 이미 계좌를 2개 등록한 경우
         if (accountProvider.checkAccountCnt(userIdx) >= 2) {
@@ -51,6 +56,7 @@ public class AccountService {
     }
 
     // 계좌 삭제
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void deleteUserAccount(int userIdx, int accountIdx) throws BaseException {
         if ( accountProvider.checkAccountCnt(userIdx) == 0 ) {
             throw new BaseException(INVALID_ACCOUNT);

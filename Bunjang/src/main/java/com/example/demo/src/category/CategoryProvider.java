@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 import java.util.List;
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -30,6 +33,7 @@ public class CategoryProvider {
     }
 
     // 첫번째 카테고리 상품 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetMainProductsRes> getFirstCategoryProducts(int firstIdx) throws BaseException {
         try {
             List<GetMainProductsRes> getMainProductsRes = categoryDao.getFirstCategoryProducts(firstIdx);
@@ -42,6 +46,7 @@ public class CategoryProvider {
     }
 
     // 두번째 카테고리 상품 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetMainProductsRes> getSecondCategoryProducts(int firstIdx, int secondIdx) throws BaseException {
         try {
 
@@ -55,6 +60,7 @@ public class CategoryProvider {
     }
 
     // 세번째 카테고리 상품 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetMainProductsRes> getThirdCategoryProducts(int firstIdx,int secondIdx, int thirdIdx) throws BaseException {
         try {
             List<GetMainProductsRes> getMainProductsRes = categoryDao.getThirdCategoryProducts(firstIdx,secondIdx,thirdIdx);

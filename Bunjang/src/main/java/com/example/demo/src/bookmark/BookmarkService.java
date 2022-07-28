@@ -10,7 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.sql.DataSource;
+import java.sql.SQLException;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -31,6 +35,7 @@ public class BookmarkService {
     }
 
     // 찜 추가/취소
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public String createPatchBookmark(int userIdx, int productIdx) throws BaseException {
         try{
             if(bookmarkProvider.checkBookmark(userIdx,productIdx) == 1){

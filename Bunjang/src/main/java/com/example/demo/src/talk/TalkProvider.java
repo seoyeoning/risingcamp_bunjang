@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 import java.util.List;
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -29,6 +32,7 @@ public class TalkProvider {
     }
 
     // 이미 만들어진 채팅방 존재 여부 확인
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int checkRoomExist(int sendUserIdx, int receiveUserIdx) throws BaseException {
         try {
             int result = talkDao.checkRoomExist(sendUserIdx,receiveUserIdx);
@@ -41,6 +45,7 @@ public class TalkProvider {
     }
 
     // 직거래 상세 정보 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetDirectTransactionInfoRes getDirectTransactionInfo(GetDirectTransactionInfoReq getDirectTransactionInfoReq) throws BaseException {
         try {
             GetDirectTransactionInfoRes getDirectTransactionInfoRes = talkDao.getDirectTransactionInfo(getDirectTransactionInfoReq);
@@ -51,6 +56,7 @@ public class TalkProvider {
     }
 
     // 번개톡 대화 내용 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetUserChatsRes> getUserChats(int roomIdx) throws BaseException{
         try {
             List<GetUserChatsRes> getUserChatsRes = talkDao.getUserChats(roomIdx);

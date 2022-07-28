@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 import java.util.List;
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -28,6 +31,7 @@ public class BookmarkProvider {
     }
 
     // 찜 여부 확인
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int checkBookmark(int userIdx, int productIdx) throws BaseException {
         try {
             return bookmarkDao.checkBookmark(userIdx,productIdx);
@@ -37,6 +41,7 @@ public class BookmarkProvider {
     }
 
     // 찜 조회
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetUserBookmarksRes> getUserBookmarks(int userIdx) throws BaseException {
         try {
 
@@ -49,6 +54,7 @@ public class BookmarkProvider {
     }
 
     // 유저가 상품을 찜했는지 여부
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int existBookmark(int userIdx, int productIdx) throws BaseException{
         try {
 
