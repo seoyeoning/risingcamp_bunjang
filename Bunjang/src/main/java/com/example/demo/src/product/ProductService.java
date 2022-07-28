@@ -25,6 +25,9 @@ public class ProductService {
 
     // 상품 등록
     public void postProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
+        if (productDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
         try {
 
             int result = productDao.postProduct(userIdx,postProductReq);

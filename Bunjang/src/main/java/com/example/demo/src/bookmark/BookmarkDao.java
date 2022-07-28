@@ -86,5 +86,27 @@ public class BookmarkDao {
                 existBookmarkParams);
     }
 
+    // 유저 존재하는지 체크
+    public int checkUser(int userIdx) {
+        String checkUserQuery = "select exists(select userId\n" +
+                "from Users\n" +
+                "where userId = ?) checkUser";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,
+                int.class,
+                checkUserParams);
+    }
+
+    // 상품 존재하는지 체크
+    public int checkProduct(int productIdx) {
+        String checkProductQuery = "select exists(select Products.id\n" +
+                "from Products\n" +
+                "where Products.id = ?) checkProduct";
+        int checkProductParams = productIdx;
+        return this.jdbcTemplate.queryForObject(checkProductQuery,
+                int.class,
+                checkProductParams);
+    }
+
 
 }

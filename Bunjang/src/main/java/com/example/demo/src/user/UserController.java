@@ -144,6 +144,14 @@ public class UserController {
     @PatchMapping("/{userIdx}/storeInfo")
     public BaseResponse<String> modifyStoreInfo(@PathVariable("userIdx") int userIdx,@RequestBody PatchUserStoreInfoReq patchUserStoreInfoReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            if (patchUserStoreInfoReq.getStoreName() == null) {
+                return new BaseResponse<>(POST_STORE_EMPTY_NAME);
+            }
             userService.modifyUserStoreInfo(userIdx, patchUserStoreInfoReq);
 
             String result = "상점 정보가 변경되었습니다.";
@@ -163,6 +171,11 @@ public class UserController {
     @PatchMapping("/{userIdx}/userInfo")
     public BaseResponse<String> modifyUserInfo(@PathVariable("userIdx") int userIdx,@RequestBody PatchUserInfoReq patchUserInfoReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             userService.modifyUserInfo(userIdx, patchUserInfoReq);
 
             String result = "유저 정보가 변경되었습니다.";
@@ -181,6 +194,10 @@ public class UserController {
     @PostMapping("/{userIdx}/{storeIdx}/new-block")
     public BaseResponse<String> createBlockStore(@PathVariable("userIdx") int userIdx,@PathVariable("storeIdx") int storeIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
             userService.createBlockStore(userIdx,storeIdx);
 
@@ -201,6 +218,11 @@ public class UserController {
     @GetMapping("/{userIdx}/blockStores")
     public BaseResponse<List<GetUserBlockStoresRes>> getUserBlockStores(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             List<GetUserBlockStoresRes> getUserBlockStoresRes = userProvider.getUserBlockStores(userIdx);
 
             return new BaseResponse<>(getUserBlockStoresRes);
@@ -218,6 +240,11 @@ public class UserController {
     @GetMapping("/{userIdx}/history")
     public BaseResponse<List<GetUserHistoryProductRes>> getUserHistoryProduct(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             List<GetUserHistoryProductRes> getUserHistoryProductRes = userProvider.getUserHistoryProduct(userIdx);
 
             return new BaseResponse<>(getUserHistoryProductRes);
@@ -234,6 +261,11 @@ public class UserController {
     @GetMapping("/{userIdx}/my")
     public BaseResponse<GetUserMyRes> getUserMy(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             GetUserMyRes getUserMyRes= userProvider.getUserMy(userIdx);
 
             return new BaseResponse<>(getUserMyRes);

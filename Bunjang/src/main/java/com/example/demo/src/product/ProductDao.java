@@ -196,9 +196,6 @@ public class ProductDao {
     // 상품 등록
     public int postProduct(int userIdx, PostProductReq postProductReq) {
 
-        String Img1 = "https://cdn.discordapp.com/attachments/997684768114216971/1002286948649554161/IMG_4104.jpg";
-        String Img2 = "https://cdn.discordapp.com/attachments/997684768114216971/1002270862617100399/IMG_4103.jpg";
-
         // 상품 정보 입력
         String postProductReqQuery = "INSERT INTO bunjang.Products (userId, productName, firstCategoryName, secondCategoryName, thirdCategoryName,\n" +
                 "                                 price, deliveryTip, count, productStatus, trade, location, description, safePay)\n" +
@@ -216,7 +213,7 @@ public class ProductDao {
         // 상품 이미지 등록
         String postProductReqImgUrlsQuery = "INSERT INTO bunjang.ProductImgUrls (productId, url1, url2, url3, url4, url5, url6, url7, url8, url9, url10, url11, url12)\n" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Object[] postProductReqImgUrlsParams = new Object[]{productId, Img1,Img2,postProductReq.getUrl3(),
+        Object[] postProductReqImgUrlsParams = new Object[]{productId, postProductReq.getUrl1(),postProductReq.getUrl2(),postProductReq.getUrl3(),
         postProductReq.getUrl4(),postProductReq.getUrl5(),postProductReq.getUrl6(),postProductReq.getUrl7(),
         postProductReq.getUrl8(),postProductReq.getUrl9(),postProductReq.getUrl10(),postProductReq.getUrl11(),postProductReq.getUrl12()};
 
@@ -230,10 +227,28 @@ public class ProductDao {
 
         return this.jdbcTemplate.update(postProductReqTagsQuery,postProductReqTagsParams);
 
-        /**
-         * 나중에 태그 쓸때마다 words 테이블에 자동 insert되게 해보기..
-         */
+    }
 
+    // 유저 존재하는지 체크
+    public int checkUser(int userIdx) {
+        String checkUserQuery = "select exists(select userId\n" +
+                "from Users\n" +
+                "where userId = ?) checkUser";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,
+                int.class,
+                checkUserParams);
+    }
+
+    // 상품 존재하는지 체크
+    public int checkProduct(int productIdx) {
+        String checkProductQuery = "select exists(select Products.id\n" +
+                "from Products\n" +
+                "where Products.id = ?) checkProduct";
+        int checkProductParams = productIdx;
+        return this.jdbcTemplate.queryForObject(checkProductQuery,
+                int.class,
+                checkProductParams);
     }
 
 

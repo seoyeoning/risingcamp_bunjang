@@ -41,6 +41,10 @@ public class AccountController {
     @PostMapping("/{userIdx}/new-account")
     public BaseResponse<String> creatUserAccount(@PathVariable("userIdx") int userIdx,@RequestBody PostUserAccountReq postUserAccountReq) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             accountService.creatUserAccount(userIdx,postUserAccountReq);
 
             String result = "유저" + userIdx + "의 계좌가 추가되었습니다.";
@@ -59,6 +63,10 @@ public class AccountController {
     @DeleteMapping("/{userIdx}/{accountIdx}")
     public BaseResponse<String> deleteUserAccount(@PathVariable("userIdx") int userIdx, @PathVariable("accountIdx") int accountIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             accountService.deleteUserAccount(userIdx,accountIdx);
 
             String result = "유저" + userIdx + "의 계좌가 삭제되었습니다.";
@@ -76,6 +84,10 @@ public class AccountController {
     @GetMapping("/{userIdx}")
     public BaseResponse<List<GerUserAccountRes>> getUserAccount(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             List<GerUserAccountRes> gerUserAccountRes = accountProvider.getUserAccount(userIdx);
 
             return new BaseResponse<>(gerUserAccountRes);

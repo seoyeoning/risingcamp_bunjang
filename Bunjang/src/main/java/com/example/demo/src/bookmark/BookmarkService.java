@@ -32,6 +32,12 @@ public class BookmarkService {
 
     // 찜 추가/취소
     public String createPatchBookmark(int userIdx, int productIdx) throws BaseException {
+        if (bookmarkDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
+        if(bookmarkDao.checkProduct(productIdx) == 0) {
+            throw new BaseException(INVALID_PRODUCT);
+        }
         try{
             if(bookmarkProvider.checkBookmark(userIdx,productIdx) == 1){
                 int b = bookmarkDao.patchBookmark(userIdx,productIdx);
