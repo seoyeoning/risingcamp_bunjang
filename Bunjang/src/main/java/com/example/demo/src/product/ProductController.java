@@ -37,19 +37,19 @@ public class ProductController {
 /* 상품 상세 페이지 조회 API
      * [GET] /:productIdx
      */
-    @ResponseBody
-    @GetMapping("/{productIdx}")
-    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx) {
+@ResponseBody
+@GetMapping("/{productIdx}/{userIdx}")
+public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
+    try {
 
-        try {
-            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx);
+        GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
 
-            return new BaseResponse<>(getProductDetailRes);
+        return new BaseResponse<>(getProductDetailRes);
 
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
+    } catch (BaseException exception) {
+        return new BaseResponse<>((exception.getStatus()));
     }
+}
 
     /* 메인화면 추천 상품 조회 API
      * [GET]

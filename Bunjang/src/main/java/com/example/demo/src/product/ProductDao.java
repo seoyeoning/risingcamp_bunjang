@@ -22,7 +22,14 @@ public class ProductDao {
 
 
     // 상품 상세 페이지 조회
-    public GetProductDetailRes getProductDetail(int productIdx) {
+    public GetProductDetailRes getProductDetail(int productIdx,int userIdx) {
+
+        // 회원이 상품 조회했을때 기록 남기는 용도
+        String userViewProductQuery = "INSERT INTO bunjang.UserViewProduct (userId, productId) VALUES (?, ?)";
+        Object[] userViewProductParams = new Object[]{userIdx,productIdx};
+        this.jdbcTemplate.update(userViewProductQuery,userViewProductParams);
+
+        // 상세 페이지 조회
         String getProductDetailQuery = "select Products.id, format(price, '###,###') as price, safePay, productName, location,\n" +
                 "       (select case when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
                 "then concat(TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()),'분 전')\n" +
@@ -98,7 +105,7 @@ public class ProductDao {
                         rs.getString("category"),
                         rs.getInt("bookmarkCnt"),
                         getProductTagRes
-                        ),
+                ),
                 getProductDetailParams);
     }
 
