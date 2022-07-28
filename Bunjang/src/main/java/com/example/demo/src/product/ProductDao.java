@@ -196,7 +196,7 @@ public class ProductDao {
     // 상품 등록
     public int postProduct(int userIdx, PostProductReq postProductReq) {
 
-        String Img1 = "https://cdn.discordapp.com/attachments/997684768114216971/1002270862336065557/IMG_4102.jpg";
+        String Img1 = "https://cdn.discordapp.com/attachments/997684768114216971/1002286948649554161/IMG_4104.jpg";
         String Img2 = "https://cdn.discordapp.com/attachments/997684768114216971/1002270862617100399/IMG_4103.jpg";
 
         // 상품 정보 입력
