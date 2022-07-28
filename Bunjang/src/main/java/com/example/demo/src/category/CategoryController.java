@@ -44,7 +44,11 @@ public class CategoryController {
     @GetMapping("/{firstIdx}")
     public BaseResponse<List<GetMainProductsRes>> getFirstCategoryProducts(@PathVariable("firstIdx") int firstIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
 
+            if ( firstIdx < 1 && firstIdx > 28) {
+                return new BaseResponse<>(INVALID_FIRSTCATEGORYID);
+            }
             List<GetMainProductsRes> getMainProductsRes = categoryProvider.getFirstCategoryProducts(firstIdx);
 
             return new BaseResponse<>(getMainProductsRes);
@@ -62,7 +66,11 @@ public class CategoryController {
     @GetMapping("/{firstIdx}/{secondIdx}")
     public BaseResponse<List<GetMainProductsRes>> getSecondCategoryProducts(@PathVariable("firstIdx") int firstIdx, @PathVariable("secondIdx") int secondIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
 
+            if ( firstIdx < 1 || firstIdx > 28) {
+                return new BaseResponse<>(INVALID_FIRSTCATEGORYID);
+            }
             List<GetMainProductsRes> getMainProductsRes = categoryProvider.getSecondCategoryProducts(firstIdx,secondIdx);
 
             return new BaseResponse<>(getMainProductsRes);
@@ -80,6 +88,11 @@ public class CategoryController {
     @GetMapping("/{firstIdx}/{secondIdx}/{thirdIdx}")
     public BaseResponse<List<GetMainProductsRes>> getThirdCategoryProducts(@PathVariable("firstIdx") int firstIdx,@PathVariable("secondIdx") int secondIdx,@PathVariable("thirdIdx") int thirdIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            
+            if ( firstIdx < 1 || firstIdx > 28) {
+                return new BaseResponse<>(INVALID_FIRSTCATEGORYID);
+            }
 
             List<GetMainProductsRes> getMainProductsRes = categoryProvider.getThirdCategoryProducts(firstIdx,secondIdx,thirdIdx);
 

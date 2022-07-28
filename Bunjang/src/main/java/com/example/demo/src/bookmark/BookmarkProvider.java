@@ -43,6 +43,9 @@ public class BookmarkProvider {
     // 찜 조회
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetUserBookmarksRes> getUserBookmarks(int userIdx) throws BaseException {
+        if (bookmarkDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
         try {
 
             List<GetUserBookmarksRes> getUserBookmarksRes = bookmarkDao.getUserBookmarks(userIdx);
@@ -56,6 +59,12 @@ public class BookmarkProvider {
     // 유저가 상품을 찜했는지 여부
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int existBookmark(int userIdx, int productIdx) throws BaseException{
+        if (bookmarkDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
+        if(bookmarkDao.checkProduct(productIdx) == 0) {
+            throw new BaseException(INVALID_PRODUCT);
+        }
         try {
 
             int result = bookmarkDao.existBookmark(userIdx,productIdx);

@@ -144,6 +144,9 @@ public class UserProvider {
     // 최근 본 상품 조회
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetUserHistoryProductRes> getUserHistoryProduct(int userIdx) throws BaseException {
+        if (userDao.checkUser(userIdx) == 0 ) {
+            throw new BaseException(INVALID_USER);
+        }
         try {
             List<GetUserHistoryProductRes> getUserHistoryProductRes = userDao.getUserHistoryProduct(userIdx);
             return getUserHistoryProductRes;

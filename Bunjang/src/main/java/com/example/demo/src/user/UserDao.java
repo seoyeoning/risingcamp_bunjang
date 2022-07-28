@@ -377,6 +377,16 @@ public class UserDao {
 
     }
 
+    public int checkUser(int userIdx) {
+        String checkUserQuery = "select exists(select userId\n" +
+                "from Users\n" +
+                "where userId = ?) checkUser";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,
+                int.class,
+                checkUserParams);
+    }
+
 
 
 
