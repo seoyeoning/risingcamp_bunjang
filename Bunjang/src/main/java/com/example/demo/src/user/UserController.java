@@ -226,4 +226,33 @@ public class UserController {
         }
     }
 
+    /**
+     * 마이 페이지 조회
+     * [GET] /:userIdx/my
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/my")
+    public BaseResponse<List<GetUserMyRes>> getUserMy(@PathVariable("userIdx") int userIdx) {
+        try {
+            List<GetUserMyRes> getUserMyRes = userProvider.getUserMy(userIdx);
+
+            return new BaseResponse<>(getUserMyRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 카카오 소셜 로그인
+     * [GET] /kakao
+     */
+    @ResponseBody
+    @GetMapping("/kakao")
+    public void  kakaoCallback(@RequestParam String code) throws BaseException{
+
+        String access_Token = userService.getKaKaoAccessToken(code);
+        userService.createKakaoUser(access_Token);
+
+    }
+
 }

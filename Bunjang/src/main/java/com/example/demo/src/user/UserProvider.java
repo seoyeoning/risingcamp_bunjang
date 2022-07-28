@@ -138,7 +138,16 @@ public class UserProvider {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
 
+    // 마이페이지 조회
+    public List<GetUserMyRes> getUserMy(int userIdx) throws BaseException{
+        try {
+            List<GetUserMyRes> getUserMyRes = userDao.getUserMy(userIdx);
+            return getUserMyRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 
 

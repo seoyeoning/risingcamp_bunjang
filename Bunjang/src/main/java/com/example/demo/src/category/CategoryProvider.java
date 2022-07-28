@@ -30,9 +30,9 @@ public class CategoryProvider {
     }
 
     // 첫번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getFirstCategoryProducts(GetFirstCategoryProductsReq getFirstCategoryProductsReq) throws BaseException {
+    public List<GetMainProductsRes> getFirstCategoryProducts(int firstIdx) throws BaseException {
         try {
-            List<GetMainProductsRes> getMainProductsRes = categoryDao.getFirstCategoryProducts(getFirstCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryDao.getFirstCategoryProducts(firstIdx);
 
             return getMainProductsRes;
 
@@ -42,10 +42,10 @@ public class CategoryProvider {
     }
 
     // 두번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getSecondCategoryProducts(GetSecondCategoryProductsReq getSecondCategoryProductsReq) throws BaseException {
+    public List<GetMainProductsRes> getSecondCategoryProducts(int firstIdx, int secondIdx) throws BaseException {
         try {
 
-            List<GetMainProductsRes> getMainProductsRes = categoryDao.getSecondCategoryProducts(getSecondCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryDao.getSecondCategoryProducts(firstIdx,secondIdx);
 
             return getMainProductsRes;
 
@@ -55,9 +55,9 @@ public class CategoryProvider {
     }
 
     // 세번째 카테고리 상품 조회
-    public List<GetMainProductsRes> getThirdCategoryProducts(GetThirdCategoryProductsReq getThirdCategoryProductsReq) throws BaseException {
+    public List<GetMainProductsRes> getThirdCategoryProducts(int firstIdx,int secondIdx, int thirdIdx) throws BaseException {
         try {
-            List<GetMainProductsRes> getMainProductsRes = categoryDao.getThirdCategoryProducts(getThirdCategoryProductsReq);
+            List<GetMainProductsRes> getMainProductsRes = categoryDao.getThirdCategoryProducts(firstIdx,secondIdx,thirdIdx);
 
             return getMainProductsRes;
         } catch (Exception exception) {
