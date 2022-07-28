@@ -34,7 +34,6 @@ public class ProductController {
         this.jwtService = jwtService;
     }
 
-<<<<<<< HEAD
     /**
      * 유저 jwt 조회
      * [GET] /:userIdx/jwt
@@ -45,31 +44,17 @@ public class ProductController {
         String useJwt = productService.getUserJwt(userIdx);
         return new BaseResponse<>(useJwt);
     }
-=======
-/* 상품 상세 페이지 조회 API
+
+ /* 상품 상세 페이지 조회 API
      * [GET] /:productIdx
      */
 @ResponseBody
 @GetMapping("/{productIdx}/{userIdx}")
 public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
     try {
->>>>>>> dev_test
 
         GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
 
-<<<<<<< HEAD
-    /** 상품 상세 페이지 조회 API
-     * [GET] /:productIdx/:userIdx
-     */
-    @ResponseBody
-    @GetMapping("/{productIdx}/{userIdx}")
-    public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
-        try {
-
-            GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
-
-            return new BaseResponse<>(getProductDetailRes);
-=======
         return new BaseResponse<>(getProductDetailRes);
 
     } catch (BaseException exception) {
@@ -92,28 +77,8 @@ public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("product
             return new BaseResponse<>((exception.getStatus()));
         }
     }
->>>>>>> dev_test
 
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
 
-    /** 메인화면 추천 상품 조회 API
-     * [GET]
-     */
-    @ResponseBody
-    @GetMapping("")
-    public BaseResponse<List<GetMainProductsRes>> getMainProducts() {
-        try {
-            List<GetMainProductsRes> getMainProductsRes = productProvider.getMainProducts();
-
-            return new BaseResponse<>(getMainProductsRes);
-
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
 
     /**
      * 상품 등록 태그 조회 API
