@@ -141,10 +141,20 @@ public class UserProvider {
     }
 
     // 마이페이지 조회
-    public List<GetUserMyRes> getUserMy(int userIdx) throws BaseException{
+    public GetUserMyRes getUserMy(int userIdx) throws BaseException{
         try {
-            List<GetUserMyRes> getUserMyRes = userDao.getUserMy(userIdx);
+            GetUserMyRes getUserMyRes = userDao.getUserMy(userIdx);
             return getUserMyRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 카카오 소셜 로그인 이메일 중복 체크
+    public int checkKakaoUser(String email) throws BaseException{
+        try {
+            int result = userDao.checkKakaoUser(email);
+            return result;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
