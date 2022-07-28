@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
+    INVALID_ORDER(false,2004,"유효하지 않은 주문입니다."),
 
     // users
     USERS_LENGTH_USER_NUMBER(false, 2009, "6자리 OTP를 입력해주세요"),
@@ -43,11 +44,15 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
+<<<<<<< HEAD
 
     // [POST] /accounts
     EXCESS_ACCOUNT(false,3015,"계좌는 최대 2개까지 등록 가능합니다."),
     //[DELETE] /accounts
     INVALID_ACCOUNT(false,3016,"존재하지 않는 계좌입니다."),
+=======
+    DUPLICATED_ORDER(false,3015,"중복된 주문입니다."),
+>>>>>>> dev_test
 
 
     /**

@@ -34,6 +34,7 @@ public class ProductController {
         this.jwtService = jwtService;
     }
 
+<<<<<<< HEAD
     /**
      * 유저 jwt 조회
      * [GET] /:userIdx/jwt
@@ -44,8 +45,19 @@ public class ProductController {
         String useJwt = productService.getUserJwt(userIdx);
         return new BaseResponse<>(useJwt);
     }
+=======
+/* 상품 상세 페이지 조회 API
+     * [GET] /:productIdx
+     */
+@ResponseBody
+@GetMapping("/{productIdx}/{userIdx}")
+public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("productIdx") int productIdx,@PathVariable("userIdx") int userIdx) {
+    try {
+>>>>>>> dev_test
 
+        GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
 
+<<<<<<< HEAD
     /** 상품 상세 페이지 조회 API
      * [GET] /:productIdx/:userIdx
      */
@@ -57,6 +69,30 @@ public class ProductController {
             GetProductDetailRes getProductDetailRes = productProvider.getProductDetail(productIdx,userIdx);
 
             return new BaseResponse<>(getProductDetailRes);
+=======
+        return new BaseResponse<>(getProductDetailRes);
+
+    } catch (BaseException exception) {
+        return new BaseResponse<>((exception.getStatus()));
+    }
+}
+
+    /* 메인화면 추천 상품 조회 API
+     * [GET]
+            */
+    @ResponseBody
+    @GetMapping("")
+    public BaseResponse<List<GetMainProductsRes>> getMainProducts() {
+        try {
+            List<GetMainProductsRes> getMainProductsRes = productProvider.getMainProducts();
+
+            return new BaseResponse<>(getMainProductsRes);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+>>>>>>> dev_test
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -155,10 +191,45 @@ public class ProductController {
             productService.postProduct(userIdx, postProduct);
 
             String result = "상품 등록이 완료되었습니다.";
-            return new BaseResponse<>(result);
+                return new BaseResponse<>(result);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @GetMapping("/search/{keyword}")
+    public BaseResponse<List<GetMainProductsRes>> searchProduct(@PathVariable("keyword") String keyword) {
+        try {
+            return new BaseResponse<>(productProvider.getSearch(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/search/keywords/{keyword}")
+    public BaseResponse<List<GetKeywordRes>> getKeywrods(@PathVariable("keyword") String keyword) {
+        try {
+            return new BaseResponse<>(productProvider.getKeywords(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/search/store-keywords/{keyword}")
+    public BaseResponse<List<GetStoreKeywordRes>> getStoreKeywords(@PathVariable("keyword") String keyword) {
+        try {
+            return new BaseResponse<>(productProvider.getStoreKeywords(keyword));
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }
