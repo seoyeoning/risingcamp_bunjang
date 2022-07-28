@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -32,7 +34,7 @@ public class AddressProvider {
         this.addressDao = addressDao;
         this.jwtService = jwtService;
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetAddressRes> getAddresses(int userId) throws BaseException {
         try {
             return addressDao.getAddresses(userId);
@@ -40,7 +42,7 @@ public class AddressProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetAddressRes getAddress(int userId, String addressName) throws BaseException {
         try {
             return addressDao.getAddress(userId, addressName);
@@ -48,7 +50,7 @@ public class AddressProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetSelectAddressRes> getSelectAddresses(int userId) throws BaseException {
         try {
             return addressDao.getSelectAddress(userId);
@@ -56,7 +58,7 @@ public class AddressProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetLocationRes searchLocation(String keyword)throws BaseException{
         String clientId = "2blafdybiv";  //clientId
         String clientSecret = "mkII0UA8VVIe12XO3EbRjNzvTAiescXM9ltrDi6W";  //clientSecret

@@ -60,6 +60,7 @@ public enum BaseResponseStatus {
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
     SERVER_ERROR(false, 4001, "서버와의 연결에 실패하였습니다."),
+    LOGIN_FAIL(false,4002, "유효하지 않은 회원입니다."),
 
     //[PATCH] /users/{userIdx}
     MODIFY_FAIL_USERINFO(false,4014,"유저정보 수정 실패"),

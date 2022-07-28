@@ -6,6 +6,9 @@ import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 
@@ -23,6 +26,8 @@ public class StoreService {
         this.jwtService = jwtService;
     }
 
+
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public String follow(int storeId, int userId)throws BaseException {
         try {
             if(!(storeDao.getFollowStatus(storeId,userId))) {

@@ -11,12 +11,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.SQLException;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 
@@ -33,7 +35,7 @@ public class AddressService {
         this.addressProvider = addressProvider;
         this.jwtService = jwtService;
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void addAddress(PostAddressReq postAddressReq) throws BaseException{
         try {
             if (postAddressReq.getStatus().equals("기본"))addressDao.postAddressStatus(postAddressReq);
@@ -42,7 +44,7 @@ public class AddressService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void deleteAddress(DeleteAddressReq deleteAddressReq) throws BaseException{
         try {
             addressDao.deleteAddress(deleteAddressReq);
@@ -50,7 +52,7 @@ public class AddressService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public void modifyAddress(PatchAddressReq patchAddressReq) throws BaseException{
         try {
             if (patchAddressReq.getStatus().equals("기본"))addressDao.updateAddressStatus(patchAddressReq);

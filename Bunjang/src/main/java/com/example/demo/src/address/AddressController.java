@@ -17,6 +17,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+
 @RestController
 @RequestMapping("/bunjang/addresses")
 public class AddressController {
@@ -40,6 +42,12 @@ public class AddressController {
     @GetMapping("/{userId}")
     public BaseResponse<List<GetAddressRes>> getAddresses(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(addressProvider.getAddresses(userId));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -51,6 +59,12 @@ public class AddressController {
     @GetMapping("/{userId}/{addressName}")
     public BaseResponse<GetAddressRes> getAddress(@PathVariable("userId") int userId,@PathVariable("addressName") String addressName){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(addressProvider.getAddress(userId, addressName));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -63,6 +77,12 @@ public class AddressController {
     public BaseResponse addAddress(@RequestBody PostAddressReq postAddressReq){
         try {
 //            if (postAddressReq)
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(postAddressReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             addressService.addAddress(postAddressReq);
             return new BaseResponse<>("주소 추가 성공");
         }catch (BaseException exception){
@@ -75,6 +95,12 @@ public class AddressController {
     @PatchMapping("")
     public BaseResponse modifyAddress(@RequestBody PatchAddressReq patchAddressReq){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(patchAddressReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             addressService.modifyAddress(patchAddressReq);
             return new BaseResponse<>("주소 수정 성공");
         }catch (BaseException exception){
@@ -87,6 +113,12 @@ public class AddressController {
     @DeleteMapping("")
     public BaseResponse deleteAddress(@RequestBody DeleteAddressReq deleteAddressReq){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(deleteAddressReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             addressService.deleteAddress(deleteAddressReq);
             return new BaseResponse<>("주소 삭제 성공");
         }catch (BaseException exception){
@@ -99,6 +131,12 @@ public class AddressController {
     @GetMapping("/orders/{userId}")
     public BaseResponse<List<GetSelectAddressRes>> getSelectAddresses(@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(addressProvider.getSelectAddresses(userId));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

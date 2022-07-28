@@ -5,7 +5,9 @@ import com.example.demo.src.product.model.GetTagsRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -22,6 +24,7 @@ public class StoreProvider {
         this.storeDao = storeDao;
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int getFollower(int userId) throws BaseException{
         try {
             return storeDao.getFollower(userId);
@@ -30,6 +33,7 @@ public class StoreProvider {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public int getFollowing(int userId) throws BaseException{
         try {
             return storeDao.getFollowing(userId);

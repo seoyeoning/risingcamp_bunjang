@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+
 @RestController
 @RequestMapping("/bunjang/orders")
 public class OrderController {
@@ -85,6 +87,12 @@ public class OrderController {
     @GetMapping("/directs/{id}/{userId}")
     public BaseResponse getDirectOrder(@PathVariable("id") int id,@PathVariable("userId") int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(orderProvider.getDirectOrder(id,userId));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

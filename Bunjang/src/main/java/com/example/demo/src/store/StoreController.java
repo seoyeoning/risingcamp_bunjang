@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+
 @RestController
 @RequestMapping("/bunjang/stores")
 public class StoreController {
@@ -28,9 +30,15 @@ public class StoreController {
     }
 
     @ResponseBody
-    @PostMapping("/follow/{storeId}/{userId}")
+    @PostMapping("/followers/{storeId}/{userId}")
     public BaseResponse follow(@PathVariable("storeId") int storeId,@PathVariable("userId")int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(storeService.follow(storeId,userId));
 
         } catch (BaseException exception) {
@@ -39,9 +47,15 @@ public class StoreController {
     }
 
     @ResponseBody
-    @GetMapping("/follower/cnt/{userId}")
+    @GetMapping("/followers-cnt/{userId}")
     public BaseResponse getFollower(@PathVariable("userId")int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             return new BaseResponse<>(storeProvider.getFollower(userId));
 
         } catch (BaseException exception) {
@@ -50,9 +64,15 @@ public class StoreController {
     }
 
     @ResponseBody
-    @GetMapping("/following/cnt/{userId}")
+    @GetMapping("/followings-cnt/{userId}")
     public BaseResponse getFollowing(@PathVariable("userId")int userId){
         try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            };
             return new BaseResponse<>(storeProvider.getFollowing(userId));
 
         } catch (BaseException exception) {

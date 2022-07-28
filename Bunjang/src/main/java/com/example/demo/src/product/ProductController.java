@@ -164,7 +164,7 @@ public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("product
     }
 
     @ResponseBody
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/searches/{keyword}")
     public BaseResponse<List<GetMainProductsRes>> searchProduct(@PathVariable("keyword") String keyword) {
         try {
             return new BaseResponse<>(productProvider.getSearch(keyword));
@@ -175,7 +175,7 @@ public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("product
     }
 
     @ResponseBody
-    @GetMapping("/search/keywords/{keyword}")
+    @GetMapping("/searches/products-keywords/{keyword}")
     public BaseResponse<List<GetKeywordRes>> getKeywrods(@PathVariable("keyword") String keyword) {
         try {
             return new BaseResponse<>(productProvider.getKeywords(keyword));
@@ -186,7 +186,7 @@ public BaseResponse<GetProductDetailRes> getProductDetail(@PathVariable("product
     }
 
     @ResponseBody
-    @GetMapping("/search/store-keywords/{keyword}")
+    @GetMapping("/searches/store-keywords/{keyword}")
     public BaseResponse<List<GetStoreKeywordRes>> getStoreKeywords(@PathVariable("keyword") String keyword) {
         try {
             return new BaseResponse<>(productProvider.getStoreKeywords(keyword));
