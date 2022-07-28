@@ -2,6 +2,8 @@ package com.example.demo.src.user.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,12 +11,8 @@ import lombok.*;
 
 public class GetUserMyRes {
 
-    private int productIdx;
     private String storeProfileImgUrl;
     private String storeName;
     private int bookmarkCnt;
-    private String productImgUrl;
-    private String productName;
-    private String price;
-    private String timeDiff;
+    private List<GetUserMyProductsRes> getUserMyProductsResList;
 }

@@ -293,12 +293,17 @@ public class UserDao {
     }
 
     // 마이 페이지 조회
-    public List<GetUserMyRes> getUserMy(int userIdx) {
-            String getUserMyQuery = "select Products.id, storeProfileImgUrl, storeName,\n" +
+    public GetUserMyRes getUserMy(int userIdx) {
+            String getUserMyQuery = "select storeProfileImgUrl, storeName,\n" +
                     "       (select count(bookMarkid)\n" +
                     "from BookMarks\n" +
                     "where BookMarks.userId = ?) bookmarkCnt\n" +
-                    ",url1, productName, format(price, '###,###') as price,\n" +
+                    "from Users\n" +
+                    "inner join Stores on Stores.userId = Users.userId\n" +
+                    "where Users.userId = ?";
+            Object[] getUserMyParams = new Object[]{userIdx,userIdx};
+
+            String getUserMyProductsQuery = "select Products.id, url1, productName, format(price, '###,###') as price,\n" +
                     "       (select case when TIMESTAMPDIFF(SECOND ,Products.createAt,NOW()) <= 60\n" +
                     "       then concat(TIMESTAMPDIFF(SECOND ,Products.createAt,NOW()),'초 전')\n" +
                     "           when TIMESTAMPDIFF(MINUTE ,Products.createAt, NOW()) < 60\n" +
@@ -312,20 +317,64 @@ public class UserDao {
                     "inner join Users on Users.userId = Products.userId\n" +
                     "inner join Stores on Stores.userId = Users.userId\n" +
                     "inner join ProductImgUrls on ProductImgUrls.productId = Products.id\n" +
-                    "where Users.userId = ?";
-            Object[] getUserMyParams = new Object[]{userIdx,userIdx};
+                    "where Products.userId = ?";
+            int getUserMyProductsParams = userIdx;
 
-        return this.jdbcTemplate.query(getUserMyQuery,
+            List<GetUserMyProductsRes> getUserMyProductsRes = this.jdbcTemplate.query(getUserMyProductsQuery,
+                    (rs, rowNum) -> new GetUserMyProductsRes(
+                            rs.getInt("id"),
+                            rs.getString("url1"),
+                            rs.getString("productName"),
+                            rs.getString("price"),
+                            rs.getString("timeDiff")),
+                    getUserMyProductsParams);
+
+        return this.jdbcTemplate.queryForObject(getUserMyQuery,
                 (rs, rowNum) -> new GetUserMyRes(
-                        rs.getInt("id"),
                         rs.getString("storeProfileImgUrl"),
                         rs.getString("storeName"),
                         rs.getInt("bookmarkCnt"),
-                        rs.getString("url1"),
-                        rs.getString("productName"),
-                        rs.getString("price"),
-                        rs.getString("timeDiff")),
+                        getUserMyProductsRes),
                 getUserMyParams);
+
+    }
+
+    // 카카오 소셜로그인 이메일 중복 체크
+    public int checkKakaoUser(String email) {
+            String checkKakaoUserQuery = "select exists(select email\n" +
+                    "from KakaoUsers\n" +
+                    "where KakaoUsers.email = ?) emailExist";
+            String checkKakaoUserPrams = email;
+
+            return this.jdbcTemplate.queryForObject(checkKakaoUserQuery,
+                    int.class,
+                    checkKakaoUserPrams);
+    }
+
+    // 카카오 소셜 로그인 ( 이메일 존재하는경우 )
+    public int kakaoLogIn(String email) {
+            String kakaoLogInQuery = "select KakaoUsers.id\n" +
+                    "from KakaoUsers\n" +
+                    "where KakaoUsers.email = ?";
+            String kakaoLogInParams = email;
+
+            return this.jdbcTemplate.queryForObject(kakaoLogInQuery,
+                    int.class,
+                    kakaoLogInParams);
+    }
+
+    // 카카오 소셜 회원가입 (이메일 존재 안하는 경우)
+    public int kakaoSignUp(String email) {
+            String kakaoSignUpQuery = "INSERT INTO bunjang.KakaoUsers (email) \n" +
+                    "VALUES (?)";
+            String kakaoSignUpParams = email;
+
+            this.jdbcTemplate.update(kakaoSignUpQuery,kakaoSignUpParams);
+
+        String lastInsertUserKakaoIdQuery = "select last_insert_id()";
+        int userIdx = this.jdbcTemplate.queryForObject(lastInsertUserKakaoIdQuery, int.class);
+
+        return userIdx;
 
     }
 

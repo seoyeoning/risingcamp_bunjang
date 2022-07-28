@@ -169,7 +169,7 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=8f063aa69ba38fa1bcd7ad057a0ca71b"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:9000/bunjang/users/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=https://prod.roomq.shop/bunjang/users/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -208,11 +208,12 @@ public class UserService {
     }
 
     // 카카오 소셜 사용자 정보 받기
-    public void createKakaoUser(String token) throws BaseException {
+    public String createKakaoUser(String token) throws BaseException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         //access_token을 이용하여 사용자 정보 조회
+        String email = null;
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -240,17 +241,39 @@ public class UserService {
             JsonElement element = parser.parse(result);
 
             boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
-            String email = "";
-            if(hasEmail){
+            email = "";
+            if (hasEmail) {
                 email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
             }
 
             System.out.println("email : " + email);
-            
-            br.close();
 
+            br.close();
+            return email;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return email;
+    }
+
+    // 카카오 로그인/회원 가입
+    public GetKakao connectKakao(String email) throws BaseException {
+        try {
+            if (userProvider.checkKakaoUser(email) == 1) {
+                // 존재하면 로그인
+                int userIdx = userDao.kakaoLogIn(email);
+                String jwt = jwtService.createJwt(userIdx);
+                String result = "로그인에 성공했습니다.";
+                return new GetKakao(result,userIdx,jwt);
+            } else {
+                // 존재안하면 회원가입 (userProvider.checkKakaoUser(email) == 0)인 경우
+                int userIdx = userDao.kakaoSignUp(email);
+                String jwt = jwtService.createJwt(userIdx);
+                String result = "회원가입에 성공했습니다.";
+                return new GetKakao(result, userIdx,jwt);
+            }
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
