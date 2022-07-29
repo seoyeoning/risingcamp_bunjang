@@ -97,4 +97,14 @@ public class AddressDao {
                 userId);
     }
 
+    public boolean checkUser(int userId){
+        String checkQuery="select exists(select * from Users where userId=?)";
+        return this.jdbcTemplate.queryForObject(checkQuery,boolean.class,userId);
+    }
+
+    public boolean checkProduct(int productId){
+        String checkQuery="select exists(select * from Products where Id=?)";
+        return this.jdbcTemplate.queryForObject(checkQuery,boolean.class,productId);
+    }
+
 }

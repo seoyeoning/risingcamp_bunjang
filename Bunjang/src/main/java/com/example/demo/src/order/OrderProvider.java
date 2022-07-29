@@ -27,8 +27,12 @@ public class OrderProvider {
 
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public List<GetOrderRes> getOrders(int userId)throws BaseException{
+  try {
+    return orderDao.getOrders(userId);
+}catch (Exception exception){
+    throw new BaseException(DATABASE_ERROR);
+}
 
-            return orderDao.getOrders(userId);
 
     }
 
@@ -62,6 +66,8 @@ public class OrderProvider {
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetOrderParcelRes getOrderParcel(int productId, int userId)throws BaseException{
         try {
+            if (!orderDao.checkProduct(productId))
+                throw new BaseException(INVALID_PRODUCT);
             return orderDao.getOrderParcel(productId,userId);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -71,6 +77,8 @@ public class OrderProvider {
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetDirectOrderRes getDirectOrder(int productId, int userId)throws BaseException{
         try {
+            if (!orderDao.checkProduct(productId))
+                throw new BaseException(INVALID_PRODUCT);
             return orderDao.getDirectOrder(productId,userId);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -79,6 +87,8 @@ public class OrderProvider {
 
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetTradeInfoRes getTradeInfo(int productId, int userId)throws BaseException{
+        if (!orderDao.checkProduct(productId))
+            throw new BaseException(INVALID_PRODUCT);
         if (orderDao.checkTradeMethod(productId, userId).equals("직거래"))
             throw new BaseException(INVALID_ORDER);
         if (!orderDao.checkOrder(productId, userId))
@@ -92,6 +102,8 @@ public class OrderProvider {
 
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public GetDirectTradeInfoRes getDirectTradeInfo(int productId, int userId)throws BaseException{
+        if (!orderDao.checkProduct(productId))
+            throw new BaseException(INVALID_PRODUCT);
         if (orderDao.checkTradeMethod(productId, userId).equals("택배거래"))
             throw new BaseException(INVALID_ORDER);
         if (!(orderDao.checkOrder(productId, userId)))
