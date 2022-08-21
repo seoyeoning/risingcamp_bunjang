@@ -209,4 +209,4 @@ gradle-app.setting
 application.yml
 
 # 시크릿 키
-Secret.java
+Secret
