@@ -10,7 +10,7 @@ spring:
 
   datasource:
     platform: mysql
-    url: jdbc:mysql://
-    username:
-    password: 
+    url: jdbc:mysql://database-sy.cnkf7vpmvx5v.ap-northeast-2.rds.amazonaws.com/bunjang
+    username: sy
+    password: test0529
     driver-class-name: com.mysql.cj.jdbc.Driver
